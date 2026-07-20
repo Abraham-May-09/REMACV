@@ -45,9 +45,14 @@ export default function Footer() {
             >
               redmexicanadeciclodevida<br/>@gmail.com
             </a>
-            <span className="foot-link" style={{ cursor: 'default' }}>
+            <a
+              className="foot-link"
+              href="https://www.iingen.unam.mx/es-mx/Paginas/Splash/Default.aspx"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Instituto de Ingeniería<br/>UNAM · CDMX
-            </span>
+            </a>
           </div>
         </div>
         <div className="foot-bottom">

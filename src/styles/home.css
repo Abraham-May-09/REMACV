@@ -302,6 +302,11 @@
     font-weight: 800;
     letter-spacing: 0;
   }
+  .hero-wordmark-text span:last-child {
+    margin-top: .1em;
+    font-size: .6em;
+    letter-spacing: .04em;
+  }
 
   .hero-topics {
     font-family: var(--sans);
