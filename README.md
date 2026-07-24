@@ -1,80 +1,52 @@
-# REMACV — Sitio web
+# 🌿 REMACV
 
-Proyecto **React + Vite** del sitio de la Red Mexicana de Análisis de Ciclo de Vida (REMACV).
+Bienvenido al repositorio oficial del sitio web de la **Red Mexicana de Análisis de Ciclo de Vida (REMACV)**. Este espacio concentra el desarrollo, mantenimiento y evolución continua de la plataforma institucional.
 
-## Estructura
+## 📖 Sobre el Proyecto
 
-```
-remacv-react/
-├── public/
-│   └── assets/               ← Imágenes, logos y archivos estáticos
-├── src/
-│   ├── components/           ← Nav, Footer, PageHeader (chrome compartido)
-│   ├── pages/                ← Home, Eventos, Publicaciones, RedesAliadas
-│   ├── styles/               ← CSS por componente / página
-│   ├── App.jsx               ← Router principal
-│   └── main.jsx              ← Entry point
-├── index.html
-├── package.json
-└── vite.config.js
-```
+Este repositorio contiene el código fuente del sitio web oficial de REMACV, desarrollado con **React** y **Vite**. La plataforma tiene como propósito fortalecer la presencia digital de la red, facilitar el acceso a información institucional y promover la difusión de eventos, publicaciones y actividades relacionadas con el Análisis de Ciclo de Vida (ACV) en México.
 
-## Requisitos
+El proyecto se encuentra en constante actualización para mejorar su rendimiento, accesibilidad y experiencia de usuario.
 
-- **Node.js** 18 o superior
-- **npm** 9 o superior (viene con Node)
+## ⚙️ Tecnologías
 
-## Instalación
+- React
+- Vite
+- React Router
+- JavaScript (ES6+)
+- HTML5
+- CSS3
+
+## 🚀 Desarrollo
+
+Para ejecutar el proyecto de manera local:
 
 ```bash
-cd remacv-react
 npm install
-```
-
-## Desarrollo
-
-```bash
 npm run dev
 ```
 
-Abre [http://localhost:5173](http://localhost:5173) en tu navegador. Los cambios se reflejan al instante (hot reload).
-
-## Build de producción
+Para generar la versión de producción:
 
 ```bash
 npm run build
 ```
 
-Genera la versión optimizada en `dist/`. Para previsualizarla:
+## 🤝 Uso y Referencia
 
-```bash
-npm run preview
-```
+Este proyecto puede servir como referencia para fines educativos o de aprendizaje. Si deseas tomar como inspiración parte de su estructura, componentes o diseño, te invitamos a reconocer el trabajo original mediante una mención a este repositorio.
 
-## Rutas
+No está permitido utilizar la identidad visual, logotipos, nombre o contenido institucional de **REMACV** para proyectos ajenos a la organización.
 
-| Ruta | Página |
-|------|--------|
-| `/` | Home |
-| `/eventos` | Archivo de eventos |
-| `/publicaciones` | Publicaciones |
-| `/redes` | Redes aliadas |
+## 👨‍💻 Desarrollo
 
-## Tecnologías
+**Abraham May**  
+*Desarrollo y mantenimiento de la plataforma web.*
 
-- [Vite](https://vitejs.dev/) — bundler
-- [React 18](https://react.dev/)
-- [React Router 6](https://reactrouter.com/) — navegación cliente
+## 🌐 Sitio Web Oficial
 
-## Notas para editar
+**https://remacv.mx**
 
-- Los **estilos compartidos** (tokens, nav, footer) están en `src/styles/shared.css`
-- El **hero crossfade** (4 fotos de paisajes mexicanos) está en `src/styles/shared.css` (`.page-header`) y se reutiliza en todas las sub-páginas
-- Cada **página tiene su CSS** (`home.css`, `eventos.css`, etc.) que se carga al renderizar
-- Las **imágenes de los eventos** están en `public/assets/events/`
-- Las **fotos del comité** en `public/assets/people/`
-- Los **logos de redes aliadas** en `public/assets/logos/`
+---
 
-## Contacto
-
-redmexicanadeciclodevida@gmail.com
+© Red Mexicana de Análisis de Ciclo de Vida (REMACV). Todos los derechos reservados.
