@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" width="240" height="120">
+  <defs>
+    <linearGradient id="alcalaGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f7a47"></stop>
+      <stop offset="100%" stop-color="#3fa15e"></stop>
+    </linearGradient>
+  </defs>
+
+  
+  <g transform="translate(50, 60)">
+    <circle cx="0" cy="0" r="32" fill="none" stroke="url(#alcalaGrad)" stroke-width="5" stroke-linecap="round" stroke-dasharray="160 40" transform="rotate(-30)"></circle>
+    
+    <polygon points="24,-22 38,-15 30,-3" fill="#3fa15e"></polygon>
+    
+    <path d="M-8,-2 C-8,-12 0,-18 8,-14 C8,-4 0,2 -8,-2 Z" fill="#1f7a47" opacity=".85"></path>
+    <ellipse cx="0" cy="-8" rx="1" ry="6" fill="#fff" opacity=".5"></ellipse>
+  </g>
+
+  
+  <text x="100" y="58" font-family="-apple-system, &#39;SF Pro Display&#39;, &#39;Helvetica Neue&#39;, Arial, sans-serif" font-size="32" font-weight="800" fill="#0f3a23" letter-spacing="0">AlCALA</text>
+  <text x="100" y="80" font-family="-apple-system, &#39;SF Pro Text&#39;, &#39;Helvetica Neue&#39;, Arial, sans-serif" font-size="10" font-weight="600" fill="#1f7a47" letter-spacing="3">CENTROAMÉRICA</text>
+  <text x="100" y="96" font-family="-apple-system, &#39;SF Pro Text&#39;, &#39;Helvetica Neue&#39;, Arial, sans-serif" font-size="8" font-weight="500" fill="#8fbf9e" letter-spacing="2">Alianza · Ciclo de Vida</text>
+</svg>
