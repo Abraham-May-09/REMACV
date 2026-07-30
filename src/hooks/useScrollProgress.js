@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
 /**
- * useScrollProgress — drives the thin progress bar at the top of every page.
- * Looks for an element with id="scrollProgress" and updates its width.
+ * Controla la barra de progreso delgada arriba de cada página.
+ * Busca el elemento id="scrollProgress" y actualiza su ancho.
  */
 export default function useScrollProgress() {
   useEffect(() => {

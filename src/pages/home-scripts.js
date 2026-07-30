@@ -1,15 +1,15 @@
 
-  // (Logo mark + wordmark are <img> tags loaded directly from /assets/)
+  // (El emblema y el wordmark son <img> cargados directo desde /assets/)
 
   // ====================================================
-  // CURRENT YEAR  —  Footer.jsx ya pone el año, este es un fallback
+  // AÑO ACTUAL — Footer.jsx ya pone el año, este es un fallback
   // por si el DOM legacy todavía tiene <span id="year">.
   // ====================================================
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // ====================================================
-  // SMOOTH SCROLL
+  // SCROLL SUAVE
   // ====================================================
   function goTo(id) {
     const el = document.getElementById(id);
@@ -20,7 +20,7 @@
   }
 
   // ====================================================
-  // NAV STATE + PARALLAX + SCROLL PROGRESS
+  // ESTADO DEL NAV + PARALLAX + BARRA DE PROGRESO
   // ====================================================
   const nav = document.getElementById('nav');
   const progress = document.getElementById('scrollProgress');
@@ -35,29 +35,29 @@
     requestAnimationFrame(() => {
       const y = window.scrollY;
       const docH = document.documentElement.scrollHeight - window.innerHeight;
-      // nav state (Nav.jsx ya lo maneja; mantener como fallback null-safe)
+      // estado del nav (Nav.jsx ya lo maneja; mantener como fallback null-safe)
       if (nav) {
         if (y > 30) nav.classList.add('scrolled'); else nav.classList.remove('scrolled');
       }
-      // progress bar
+      // barra de progreso
       if (progress) progress.style.width = Math.min(100, (y / docH) * 100) + '%';
 
-      // hero parallax (move whole stage slightly slower than scroll)
+      // parallax del hero (mueve el stage un poco más lento que el scroll)
       if (heroStage && y < window.innerHeight * 1.2) {
         heroStage.style.transform = `translateY(${y * 0.32}px)`;
       }
 
-      // acerca photo parallax — only when in view
+      // parallax de la foto de Acerca — solo cuando está a la vista
       if (acercaImg) {
         const r = acercaImg.getBoundingClientRect();
         if (r.bottom > 0 && r.top < window.innerHeight) {
           const t = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-          const shift = (t - 0.5) * -50; // -25 to +25 px
+          const shift = (t - 0.5) * -50; // -25 a +25 px
           acercaImg.style.transform = `translateY(${shift}px)`;
         }
       }
 
-      // newsletter bg parallax
+      // parallax del fondo del newsletter
       if (nlBg) {
         const r = nlBg.getBoundingClientRect();
         if (r.bottom > 0 && r.top < window.innerHeight) {
@@ -74,7 +74,7 @@
   onScroll();
 
   // ====================================================
-  // REVEAL ON SCROLL
+  // REVEAL AL HACER SCROLL
   // ====================================================
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
@@ -84,7 +84,7 @@
   document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => io.observe(el));
 
   // ====================================================
-  // ANIMATED COUNTERS
+  // CONTADORES ANIMADOS
   // ====================================================
   const countIO = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
@@ -107,7 +107,7 @@
   document.querySelectorAll('.count').forEach((el) => countIO.observe(el));
 
   // ====================================================
-  // NEWSLETTER FORM
+  // FORMULARIO DEL NEWSLETTER
   // ====================================================
   function subscribeNL(ev) {
     ev.preventDefault();
@@ -118,7 +118,7 @@
   }
 
   // ====================================================
-  // MEMBERSHIP FORM
+  // FORMULARIO DE MEMBRESÍA
   // ====================================================
   function submitForm() {
     const nombre = document.getElementById('f-nombre').value.trim();
@@ -149,7 +149,7 @@
   }
 
   // ====================================================
-  // PLACEHOLDER GENERATORS for aliados + comité
+  // GENERADORES DE PLACEHOLDER para aliados + comité
   // ====================================================
   function monogramSVG(label, opts) {
     const o = opts || {};

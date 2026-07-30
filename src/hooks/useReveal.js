@@ -1,13 +1,8 @@
 import { useEffect } from 'react';
 
 /**
- * useReveal — keyframe-based reveal-on-scroll.
- *
- * Adds `.in` to any element with class `.reveal` or `.reveal-scale` when it
- * enters the viewport. Plus a safety net (700 ms after mount) that flips
- * every remaining `.reveal` in the initial viewport to `.in`, so animations
- * never leave a page stuck in the pre-animation hidden state — which can
- * happen on route re-mount or after a state change re-renders cards.
+ * Reveal-on-scroll: agrega `.in` a `.reveal`/`.reveal-scale` al entrar al viewport.
+ * Incluye red de seguridad a los 700ms por si el observer no dispara a tiempo.
  */
 export default function useReveal(deps = []) {
   useEffect(() => {
@@ -27,11 +22,7 @@ export default function useReveal(deps = []) {
       if (!el.classList.contains('in')) io.observe(el);
     });
 
-    // Safety net: force-show anything still hidden after 700 ms.
-    // Covers elements that are in the initial viewport before the
-    // observer has had a chance to fire (which on React route re-mount
-    // can race the first paint), and elements above the fold whose
-    // observation never produces an intersection entry in some browsers.
+    // Fallback: muestra lo que quede oculto tras 700ms.
     const t = setTimeout(() => {
       document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => {
         if (!el.classList.contains('in')) el.classList.add('in');

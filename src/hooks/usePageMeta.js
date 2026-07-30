@@ -12,11 +12,7 @@ function setMeta(selector, attr, value, createEl) {
   el.setAttribute(attr, value);
 }
 
-/**
- * Sets per-route title, meta description, canonical and Open Graph tags.
- * Needed because the app is a client-side SPA — index.html only carries
- * generic defaults, so each page must patch <head> on mount.
- */
+/** Actualiza title, description, canonical y OG por ruta (SPA sin SSR). */
 export default function usePageMeta({ title, description, path = '/' }) {
   useEffect(() => {
     document.title = title;

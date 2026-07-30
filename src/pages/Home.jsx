@@ -5,27 +5,14 @@ import Footer from '../components/Footer.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/home.css';
 
-// Vite's `?raw` suffix imports a file as a string
+// El sufijo `?raw` de Vite importa el archivo como string
 import homeBody from './home-body.html?raw';
 import homeScripts from './home-scripts.js?raw';
 
 /**
- * Home — la página principal.
- *
- * El contenido del body original (REMACV v5 - sf.html) tiene más de 800
- * elementos con CSS y JS muy específicos: animaciones de hero, parallax,
- * formulario de membresía, newsletter, placeholders de avatares, etc.
- *
- * Para no diluir todo eso convirtiéndolo a JSX y arriesgar romper detalles
- * visuales, el body se monta vía `dangerouslySetInnerHTML` y el script
- * inline se inyecta como un <script> real en el body — así sus funciones
- * (`goTo`, `submitForm`, `subscribeNL`) quedan disponibles para los
- * `onclick=""` declarativos que viven dentro del HTML.
- *
- * El Nav y el Footer SÍ son componentes React reutilizables.
- *
- * Si quieres editar una sección de la home en React puro, mueve su HTML
- * desde `home-body.html` a un componente .jsx y reemplázala aquí.
+ * Home — body legacy montado vía dangerouslySetInnerHTML; el script
+ * inline se inyecta como <script> real para exponer goTo/submitForm/
+ * subscribeNL a los onclick="" del HTML. Nav y Footer sí son React.
  */
 export default function Home() {
   const wrapperRef = useRef(null);
@@ -37,16 +24,11 @@ export default function Home() {
     path: '/',
   });
 
-  // Inject the home's inline script so its globals (goTo, submitForm,
-  // subscribeNL) become available to the onclick="" attributes inside
-  // the dangerouslySetInnerHTML content.
+  // Inyecta el script legacy y expone sus funciones a window para los onclick="".
   useEffect(() => {
     const script = document.createElement('script');
     script.dataset.remacvHome = '1';
-    // Wrap in an IIFE so re-injection (after navigation back to home)
-    // doesn't redeclare top-level `const`s into the global lexical scope.
-    // Expose: the scroll handler (for cleanup), and the inline-onclick
-    // functions to `window`.
+    // IIFE: evita redeclarar los const de nivel superior al re-montar.
     script.textContent =
       ';(function(){\n' +
       homeScripts +
@@ -58,10 +40,7 @@ export default function Home() {
       '})();';
     document.body.appendChild(script);
     return () => {
-      // Remove the scroll listener that the injected script registered,
-      // otherwise it lingers across navigations and can interfere with
-      // other pages — manipulating detached DOM nodes and re-running on
-      // every scroll for nothing.
+      // Limpia el scroll listener para que no siga corriendo en otras rutas.
       if (window.__remacvHomeScrollHandler) {
         window.removeEventListener('scroll', window.__remacvHomeScrollHandler);
         delete window.__remacvHomeScrollHandler;
@@ -70,10 +49,8 @@ export default function Home() {
     };
   }, []);
 
-  // Safety net: if the IntersectionObserver inside the injected script is
-  // slow to fire on a re-mount (after coming back from another route),
-  // force-show any `.reveal` element so the home never gets stuck in its
-  // pre-animation hidden state.
+  // Red de seguridad: fuerza a mostrar los `.reveal` si el IntersectionObserver
+  // del script legacy tarda en disparar al volver de otra ruta.
   useEffect(() => {
     const t = setTimeout(() => {
       document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => {
@@ -86,12 +63,12 @@ export default function Home() {
     return () => clearTimeout(t);
   }, []);
 
-  // If the URL has a hash (e.g. /#unete from another page), scroll to it
-  // once the home content has mounted.
+  // Si la URL trae hash (ej. /#unete desde otra página), hace scroll ahí
+  // una vez montado el contenido.
   useEffect(() => {
     if (!hash) return;
     const id = hash.replace('#', '');
-    // Wait one frame so the dangerouslySetInnerHTML content is in the DOM
+    // Espera un frame para que el contenido de dangerouslySetInnerHTML esté en el DOM
     requestAnimationFrame(() => {
       const el = document.getElementById(id);
       if (el) {
@@ -106,16 +83,16 @@ export default function Home() {
     <>
       <div className="scroll-progress" id="scrollProgress"></div>
 
-      {/* Nav rendered as a real React component */}
+      {/* Nav como componente React real */}
       <Nav />
 
-      {/* Home body — every section, with original animations & onclicks */}
+      {/* Body de la home — todas las secciones, con animaciones y onclicks originales */}
       <div
         ref={wrapperRef}
         dangerouslySetInnerHTML={{ __html: homeBody }}
       />
 
-      {/* Footer rendered as a real React component */}
+      {/* Footer como componente React real */}
       <Footer />
     </>
   );

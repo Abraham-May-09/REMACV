@@ -2,14 +2,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 /**
- * REMACV top navigation — used on every page.
- *
- * - On routes that have a dark hero immediately under it (everything except
- *   pages that don't open with a hero), the nav starts transparent over the
- *   hero and becomes white/blurred when the user scrolls past 30px.
- * - The current route is highlighted in green.
- * - Clicking the logo always navigates to home AND scrolls to top (even when
- *   already on home).
+ * Nav principal. Transparente sobre el hero, sólida al pasar 30px de scroll.
+ * El logo siempre navega a home y sube al top.
  */
 export default function Nav({ overHero = true }) {
   const { pathname } = useLocation();
@@ -28,8 +22,7 @@ export default function Nav({ overHero = true }) {
   function onLogoClick(ev) {
     ev.preventDefault();
     if (pathname !== '/') navigate('/');
-    // ScrollToTop in App.jsx handles route changes; force here too
-    // in case we're already on '/'.
+    // Forzado extra por si ya estamos en '/' (ScrollToTop no se dispara).
     requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 

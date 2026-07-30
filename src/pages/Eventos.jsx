@@ -7,7 +7,7 @@ import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/eventos.css';
 
 // ============================================================
-// EVENTS DATA — fiel al WordPress original (solo summary)
+// DATOS DE EVENTOS — fiel al WordPress original (solo resumen)
 // ============================================================
 const EVENTS = [
   {

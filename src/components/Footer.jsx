@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 /**
- * REMACV footer — used on every page.
+ * Footer de REMACV — usado en cada página.
  */
 export default function Footer() {
   return (

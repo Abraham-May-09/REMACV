@@ -1,6 +1,6 @@
 
   :root {
-    /* ——— palette: deep forest greens with the original five-dot accents ——— */
+    /* ——— paleta: verdes bosque profundo con los cinco acentos originales ——— */
     --ink: #0a1a12;
     --ink-soft: #15291e;
     --forest: #0f3a23;
@@ -162,7 +162,7 @@
   .nav-cta:hover { background: var(--pine); transform: translateY(-1px); box-shadow: 0 12px 24px -10px rgba(31,122,71,.7); }
 
   @media (max-width: 980px) {
-    /* nav wordmark handled above */
+    /* wordmark del nav ya manejado arriba */
   }
 
   /* ============================================================
@@ -224,7 +224,7 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 
-  /* ——— floating leaves drifting across the hero ——— */
+  /* ——— hojas flotantes que cruzan el hero ——— */
   .floating-leaves {
     position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
   }
@@ -933,7 +933,7 @@
     background: linear-gradient(180deg, var(--mist) 0%, var(--cream) 100%);
   }
 
-  /* Label sub-section divider ("Fundadoras", "Comité actual") */
+  /* Divisor de subsección ("Fundadoras", "Comité actual") */
   .comite-section-label {
     display: flex; align-items: center; justify-content: center;
     gap: 18px;
@@ -954,7 +954,7 @@
     max-width: 220px;
   }
 
-  /* Founders: 2-column compact editorial cards */
+  /* Fundadoras: tarjetas editoriales compactas a 2 columnas */
   .founders-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1067,7 +1067,7 @@
     font-weight: 500;
   }
 
-  /* Members: 4-col editorial portrait cards (same visual language as founders, more compact) */
+  /* Miembros: tarjetas de retrato a 4 columnas (mismo estilo que fundadoras, más compacto) */
   .members-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1307,7 +1307,7 @@
     opacity: 1;
     transform: scale(1.04);
   }
-  /* legacy CILCA dark variant removed — CILCA logo is now transparent on white */
+  /* variante oscura de CILCA eliminada — el logo ahora es transparente sobre blanco */
 
   .red-head {
     display: flex; align-items: center; justify-content: space-between;
@@ -1432,7 +1432,7 @@
     backdrop-filter: blur(6px);
     pointer-events: none;
   }
-  /* hide the "muestra" tag once the slot has a user-dropped image */
+  /* oculta la etiqueta "muestra" cuando el slot ya tiene una imagen cargada */
   .miembro-photo image-slot[data-filled]:not([data-src-default]) ~ .miembro-placeholder-tag {
     display: none;
   }
@@ -1481,7 +1481,7 @@
     overflow: hidden;
   }
   .aliados-grid > .aliado:nth-child(4n) { border-right: none; }
-  /* remove bottom border on the last row regardless of count */
+  /* quita el borde inferior de la última fila sin importar cuántos elementos tenga */
   .aliados-grid > .aliado:nth-last-child(-n+4):nth-child(4n+1),
   .aliados-grid > .aliado:nth-last-child(-n+4):nth-child(4n+1) ~ .aliado { border-bottom: none; }
 

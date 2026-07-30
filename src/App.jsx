@@ -5,7 +5,7 @@ import Eventos from './pages/Eventos.jsx';
 import Publicaciones from './pages/Publicaciones.jsx';
 import RedesAliadas from './pages/RedesAliadas.jsx';
 
-// Scroll-to-top on route change (so /eventos doesn't start halfway down the page)
+// Sube al top en cada cambio de ruta (para que /eventos no arranque a media página)
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {

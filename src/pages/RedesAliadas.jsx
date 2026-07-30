@@ -7,7 +7,7 @@ import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/redes.css';
 
 // ============================================================
-// Redes aliadas — dataset (4 regiones, 12 redes)
+// Redes aliadas — datos (4 regiones, 12 redes)
 // ============================================================
 const REGIONS = [
   {

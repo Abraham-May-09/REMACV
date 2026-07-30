@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
 /**
- * Cinematic hero header used on every sub-page (Eventos, Publicaciones, Redes).
- * 4 crossfading nature photos + dark overlay + grain + title/lede/crumbs.
+ * Header tipo hero usado en cada subpágina (Eventos, Publicaciones, Redes).
+ * 4 fotos con crossfade + overlay oscuro + grano + título/lede/crumbs.
  */
 export default function PageHeader({ crumb, title, lede, children }) {
   return (

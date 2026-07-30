@@ -6,7 +6,7 @@
    ============================================================ */
 
 :root {
-  /* palette */
+  /* paleta */
   --ink: #0a1a12;
   --ink-soft: #15291e;
   --forest: #0f3a23;
@@ -206,7 +206,7 @@ p { margin: 0; text-wrap: pretty; }
   color: #fff;
 }
 
-/* Crossfading nature backdrops (4 photos, mirror of the home hero) */
+/* Fondos con crossfade (4 fotos, réplica del hero de la home) */
 .page-stage { position: absolute; inset: 0; z-index: -3; will-change: transform; }
 .page-bg {
   position: absolute; inset: 0;
@@ -280,7 +280,7 @@ p { margin: 0; text-wrap: pretty; }
   box-shadow: 0 0 16px rgba(63,161,94,.6);
 }
 
-/* When nav is over hero — transparent until scrolled */
+/* Cuando el nav está sobre el hero — transparente hasta hacer scroll */
 .nav.over-hero:not(.scrolled) {
   background: transparent;
   box-shadow: none;
