@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import useReveal from '../hooks/useReveal.js';
 import useScrollProgress from '../hooks/useScrollProgress.js';
+import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/eventos.css';
 
 // ============================================================
@@ -89,9 +89,11 @@ export default function Eventos() {
   useScrollProgress();
   useReveal();
 
-  useEffect(() => {
-    document.title = 'Eventos · REMACV';
-  }, []);
+  usePageMeta({
+    title: 'Eventos · REMACV',
+    description: 'Conferencias, webinars, congresos y seminarios de Análisis de Ciclo de Vida en México e Iberoamérica organizados o respaldados por la REMACV.',
+    path: '/eventos',
+  });
 
   return (
     <>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
+import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/home.css';
 
 // Vite's `?raw` suffix imports a file as a string
@@ -30,9 +31,11 @@ export default function Home() {
   const wrapperRef = useRef(null);
   const { hash } = useLocation();
 
-  useEffect(() => {
-    document.title = 'REMACV — Red Mexicana de Análisis de Ciclo de Vida';
-  }, []);
+  usePageMeta({
+    title: 'REMACV — Red Mexicana de Análisis de Ciclo de Vida',
+    description: 'La REMACV es una agrupación no lucrativa, con reconocimiento nacional e internacional, dedicada al Análisis de Ciclo de Vida en México.',
+    path: '/',
+  });
 
   // Inject the home's inline script so its globals (goTo, submitForm,
   // subscribeNL) become available to the onclick="" attributes inside

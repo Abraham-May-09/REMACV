@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import useReveal from '../hooks/useReveal.js';
 import useScrollProgress from '../hooks/useScrollProgress.js';
+import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/redes.css';
 
 // ============================================================
@@ -191,9 +191,11 @@ export default function RedesAliadas() {
   useScrollProgress();
   useReveal();
 
-  useEffect(() => {
-    document.title = 'Redes aliadas · REMACV';
-  }, []);
+  usePageMeta({
+    title: 'Redes aliadas · REMACV',
+    description: 'La REMACV colabora con redes e iniciativas de ciclo de vida en Iberoamérica, Europa, Estados Unidos y a nivel global.',
+    path: '/redes',
+  });
 
   return (
     <>

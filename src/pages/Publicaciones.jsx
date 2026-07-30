@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import useReveal from '../hooks/useReveal.js';
 import useScrollProgress from '../hooks/useScrollProgress.js';
+import usePageMeta from '../hooks/usePageMeta.js';
 
 /**
  * Publicaciones — placeholder fiel al sitio anterior, donde este apartado
@@ -13,9 +13,11 @@ export default function Publicaciones() {
   useScrollProgress();
   useReveal();
 
-  useEffect(() => {
-    document.title = 'Publicaciones · REMACV';
-  }, []);
+  usePageMeta({
+    title: 'Publicaciones · REMACV',
+    description: 'Publicaciones académicas, técnicas y de divulgación producidas por la comunidad de la Red Mexicana de Análisis de Ciclo de Vida.',
+    path: '/publicaciones',
+  });
 
   return (
     <>
