@@ -1,13 +1,18 @@
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
+import InstitucionesRed from '../components/InstitucionesRed.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/home.css';
 
 // El sufijo `?raw` de Vite importa el archivo como string
 import homeBody from './home-body.html?raw';
 import homeScripts from './home-scripts.js?raw';
+
+// El body legacy se parte en dos para montar el bloque de instituciones
+// (componente React) entre el comité ejecutivo y las redes aliadas.
+const [homeBodyTop, homeBodyBottom] = homeBody.split('<!--@@INSTITUCIONES@@-->');
 
 /**
  * Home — body legacy montado vía dangerouslySetInnerHTML; el script
@@ -17,6 +22,7 @@ import homeScripts from './home-scripts.js?raw';
 export default function Home() {
   const wrapperRef = useRef(null);
   const { hash } = useLocation();
+  const navigate = useNavigate();
 
   usePageMeta({
     title: 'REMACV — Red Mexicana de Análisis de Ciclo de Vida',
@@ -63,6 +69,15 @@ export default function Home() {
     return () => clearTimeout(t);
   }, []);
 
+  // Los <a href="/..."> del HTML legacy navegan dentro de la app (sin recargar).
+  function onBodyClick(ev) {
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    const a = ev.target.closest('a[href^="/"]');
+    if (!a || a.target === '_blank') return;
+    ev.preventDefault();
+    navigate(a.getAttribute('href'));
+  }
+
   // Si la URL trae hash (ej. /#unete desde otra página), hace scroll ahí
   // una vez montado el contenido.
   useEffect(() => {
@@ -87,10 +102,11 @@ export default function Home() {
       <Nav />
 
       {/* Body de la home — todas las secciones, con animaciones y onclicks originales */}
-      <div
-        ref={wrapperRef}
-        dangerouslySetInnerHTML={{ __html: homeBody }}
-      />
+      <div ref={wrapperRef} onClick={onBodyClick}>
+        <div dangerouslySetInnerHTML={{ __html: homeBodyTop }} />
+        <InstitucionesRed compact />
+        <div dangerouslySetInnerHTML={{ __html: homeBodyBottom }} />
+      </div>
 
       {/* Footer como componente React real */}
       <Footer />

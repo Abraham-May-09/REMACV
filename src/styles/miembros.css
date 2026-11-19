@@ -1,0 +1,192 @@
+/* ============================================================
+   MIEMBROS DE LA RED — directorio + galería de instituciones
+   ============================================================ */
+
+/* ---------- Directorio ---------- */
+.directorio { background: var(--cream); }
+
+.dir-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 36px;
+}
+.dir-field { display: flex; flex-direction: column; gap: 8px; }
+.dir-field span {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--green);
+}
+.dir-field input,
+.dir-field select {
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 13px 14px;
+  width: 100%;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.dir-field input:focus,
+.dir-field select:focus {
+  outline: none;
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 3px rgba(63,161,94,.18);
+}
+.dir-count {
+  margin: 0 0 14px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .08em;
+  color: #5b6c61;
+  white-space: nowrap;
+}
+
+.dir-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.dir-card {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 16px;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+.dir-card:hover {
+  border-color: var(--sage);
+  box-shadow: 0 18px 36px -24px rgba(15,31,23,.3);
+  transform: translateY(-2px);
+}
+.dir-avatar {
+  width: 52px; height: 52px;
+  border-radius: 999px;
+  display: grid; place-items: center;
+  background: var(--mist);
+  color: var(--pine);
+  font-weight: 700; font-size: 16px;
+  letter-spacing: .02em;
+  border: 1px solid var(--moss);
+}
+.dir-body h3 {
+  font-size: 15.5px;
+  line-height: 1.25;
+  letter-spacing: -.012em;
+  color: var(--ink);
+  margin: 0;
+}
+.dir-inst {
+  margin: 5px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #5b6c61;
+}
+.dir-rol {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--green);
+  background: var(--mist);
+  border-radius: 999px;
+  padding: 4px 9px;
+}
+.dir-empty {
+  text-align: center;
+  padding: 48px 0;
+  color: #5b6c61;
+}
+.dir-empty button {
+  font: inherit; font-weight: 700;
+  color: var(--green);
+  background: none; border: 0; padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- Instituciones ---------- */
+.instituciones { padding: 100px 0 110px; background: var(--paper); }
+.instituciones-compact { background: var(--paper); border-top: 1px solid var(--line); }
+
+.inst-head { max-width: 720px; margin-bottom: 40px; }
+
+.inst-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 14px;
+}
+.inst-tile {
+  display: flex; flex-direction: column; gap: 12px;
+  align-items: center;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 16px 18px;
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.inst-tile:hover {
+  border-color: var(--sage);
+  box-shadow: 0 16px 32px -24px rgba(15,31,23,.35);
+}
+.inst-logo {
+  width: 100%;
+  height: 72px;
+  display: grid; place-items: center;
+}
+.inst-logo img {
+  max-width: 100%; max-height: 72px;
+  object-fit: contain;
+}
+.inst-logo-text {
+  background: var(--mist);
+  border-radius: 8px;
+}
+.inst-sigla {
+  font-size: 20px; font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--pine);
+  padding: 0 8px;
+}
+.inst-nombre {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: #44574c;
+  text-wrap: balance;
+}
+
+/* Versión compacta (Inicio) */
+.inst-grid-compact {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+.inst-grid-compact .inst-tile { padding: 14px 10px; }
+.inst-grid-compact .inst-logo { height: 56px; }
+.inst-grid-compact .inst-logo img { max-height: 56px; }
+.inst-grid-compact .inst-sigla { font-size: 16px; }
+.inst-grid-compact .inst-nombre { font-size: 11px; }
+
+.inst-foot { margin-top: 36px; }
+
+@media (max-width: 1024px) {
+  .dir-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .inst-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .inst-grid-compact { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .dir-tools { grid-template-columns: 1fr; }
+  .dir-count { margin: 0; }
+  .dir-grid { grid-template-columns: 1fr; }
+  .inst-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .inst-grid-compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .instituciones { padding: 72px 0 80px; }
+}

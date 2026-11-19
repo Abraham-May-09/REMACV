@@ -230,6 +230,7 @@
     'comite-paredes':   { initials: 'MP', hue: 195 },
     'comite-adriana':   { initials: 'A',  hue: 350 },
     'comite-claudia':   { initials: 'C',  hue: 285 },
+    'comite-lea':       { initials: 'LA', hue: 160 },
     'comite-vocal-1':   { initials: '?',  hue: 100 },
     'comite-vocal-2':   { initials: '?',  hue: 220 },
   };
