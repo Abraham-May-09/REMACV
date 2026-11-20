@@ -109,27 +109,97 @@
   // ====================================================
   // FORMULARIO DEL NEWSLETTER
   // ====================================================
-  function subscribeNL(ev) {
+  // ====================================================
+  // ENVÍO DE FORMULARIOS → webhook de n8n
+  // (la URL se define en src/data/formularios.js)
+  // ====================================================
+  function escapa(t) {
+    return String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function correoValido(c) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(c);
+  }
+  async function enviarFormulario(datos) {
+    const url = window.__REMACV_FORMS_URL;
+    if (!url) throw new Error('Formulario sin destino configurado');
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 15000);
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ pagina: location.href, enviado: new Date().toISOString() }, datos)),
+        signal: ctrl.signal,
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  // ====================================================
+  // NEWSLETTER
+  // ====================================================
+  async function subscribeNL(ev) {
     ev.preventDefault();
-    const email = document.getElementById('nl-email').value.trim();
-    if (!email) return;
     const form = ev.target;
-    form.innerHTML = `<div style="padding: 14px 22px; color: #fff; font-size: 14px; font-weight: 600; letter-spacing: .04em;">¡Listo, ${email}! Te suscribimos al boletín.</div>`;
+    const input = document.getElementById('nl-email');
+    const btn = form.querySelector('button[type="submit"]');
+    const nota = form.parentElement.querySelector('.nl-note');
+    const email = input.value.trim();
+    if (!correoValido(email)) { input.focus(); return; }
+    const trampa = form.querySelector('input[name="website"]');
+    btn.disabled = true;
+    const textoBtn = btn.textContent;
+    btn.textContent = 'Enviando…';
+    try {
+      await enviarFormulario({ tipo: 'suscripcion', correo: email, website: trampa ? trampa.value : '' });
+      form.innerHTML = `<div style="padding: 14px 22px; color: #fff; font-size: 14px; font-weight: 600; letter-spacing: .04em;">¡Listo, ${escapa(email)}! Te suscribimos al boletín.</div>`;
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = textoBtn;
+      if (nota) {
+        nota.textContent = 'No pudimos registrar tu correo. Intenta de nuevo en unos minutos o escríbenos a contacto@remacv.mx.';
+        nota.style.color = '#ffd6cf';
+      }
+    }
   }
 
   // ====================================================
   // FORMULARIO DE MEMBRESÍA
   // ====================================================
-  function submitForm() {
+  async function submitForm() {
     const nombre = document.getElementById('f-nombre').value.trim();
     const correo = document.getElementById('f-correo').value.trim();
-    if (!nombre || !correo) {
-      const btn = document.getElementById('submitBtn');
+    const institucion = document.getElementById('f-inst').value.trim();
+    const mensaje = document.getElementById('f-msg').value.trim();
+    const trampa = document.getElementById('f-website');
+    const btn = document.getElementById('submitBtn');
+    const aviso = (texto) => {
       btn.style.background = '#b85d3b';
-      btn.textContent = 'Completa nombre y correo';
-      setTimeout(() => { btn.style.background = ''; btn.textContent = 'Enviar solicitud'; }, 1800);
+      btn.textContent = texto;
+      setTimeout(() => { btn.style.background = ''; btn.textContent = 'Enviar solicitud'; }, 2400);
+    };
+    if (!nombre || !correo) { aviso('Completa nombre y correo'); return; }
+    if (!correoValido(correo)) { aviso('Revisa tu correo electrónico'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    try {
+      await enviarFormulario({
+        tipo: 'membresia', nombre, correo, institucion, mensaje,
+        website: trampa ? trampa.value : '',
+      });
+    } catch (e) {
+      btn.disabled = false;
+      btn.style.background = '#b85d3b';
+      btn.textContent = 'No se pudo enviar. Intenta de nuevo';
+      const nota = document.getElementById('formError');
+      if (nota) nota.style.display = 'block';
+      setTimeout(() => { btn.style.background = ''; btn.textContent = 'Enviar solicitud'; }, 3200);
       return;
     }
+
     const inner = document.getElementById('formInner');
     inner.style.opacity = '0';
     inner.style.transform = 'translateY(8px)';
@@ -140,7 +210,7 @@
           <div style="width: 64px; height: 64px; border-radius: 999px; background: rgba(31,122,71,.12); color: var(--green); display: grid; place-items: center; margin: 0 auto 18px;">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
-          <h3 style="font-family: var(--serif); font-size: 26px; margin-bottom: 10px;">¡Gracias, ${nombre.split(' ')[0]}!</h3>
+          <h3 style="font-family: var(--sans); font-size: 26px; margin-bottom: 10px;">¡Gracias, ${escapa(nombre.split(' ')[0])}!</h3>
           <p style="color: #5b6c61; font-size: 15px; line-height: 1.5;">Hemos recibido tu solicitud.<br>Te contactaremos muy pronto.</p>
         </div>`;
       inner.style.opacity = '1';
@@ -230,6 +300,7 @@
     'comite-paredes':   { initials: 'MP', hue: 195 },
     'comite-adriana':   { initials: 'A',  hue: 350 },
     'comite-claudia':   { initials: 'C',  hue: 285 },
+    'comite-lea':       { initials: 'LA', hue: 160 },
     'comite-vocal-1':   { initials: '?',  hue: 100 },
     'comite-vocal-2':   { initials: '?',  hue: 220 },
   };

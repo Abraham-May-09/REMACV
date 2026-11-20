@@ -1,13 +1,20 @@
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
+import InstitucionesRed from '../components/InstitucionesRed.jsx';
+import { DESTINOS } from '../data/destinos.js';
+import { FORMS_WEBHOOK_URL } from '../data/formularios.js';
 import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/home.css';
 
 // El sufijo `?raw` de Vite importa el archivo como string
 import homeBody from './home-body.html?raw';
 import homeScripts from './home-scripts.js?raw';
+
+// El body legacy se parte en dos para montar el bloque de instituciones
+// (componente React) entre el comité ejecutivo y las redes aliadas.
+const [homeBodyTop, homeBodyBottom] = homeBody.split('<!--@@INSTITUCIONES@@-->');
 
 /**
  * Home — body legacy montado vía dangerouslySetInnerHTML; el script
@@ -17,6 +24,7 @@ import homeScripts from './home-scripts.js?raw';
 export default function Home() {
   const wrapperRef = useRef(null);
   const { hash } = useLocation();
+  const navigate = useNavigate();
 
   usePageMeta({
     title: 'REMACV — Red Mexicana de Análisis de Ciclo de Vida',
@@ -29,6 +37,7 @@ export default function Home() {
     const script = document.createElement('script');
     script.dataset.remacvHome = '1';
     // IIFE: evita redeclarar los const de nivel superior al re-montar.
+    window.__REMACV_FORMS_URL = FORMS_WEBHOOK_URL;
     script.textContent =
       ';(function(){\n' +
       homeScripts +
@@ -49,6 +58,42 @@ export default function Home() {
     };
   }, []);
 
+  // Botones «Explorar» / «Leer»: toman su destino de src/data/destinos.js.
+  // Con destino, el botón se vuelve enlace y toda la tarjeta es clicable;
+  // sin destino, muestra «Próximamente».
+  useEffect(() => {
+    const root = wrapperRef.current;
+    if (!root) return;
+    root.querySelectorAll('[data-destino]').forEach((el) => {
+      const [grupo, clave] = el.dataset.destino.split('.');
+      const url = DESTINOS[grupo]?.[clave] || '';
+      const card = el.closest('.tema, .especial');
+      if (!url) {
+        el.textContent = 'Próximamente';
+        el.classList.add('is-pending');
+        card?.classList.add('sin-destino');
+        return;
+      }
+      const a = document.createElement('a');
+      a.className = el.className + ' card-link';
+      a.href = url;
+      a.textContent = el.textContent;
+      if (/^https?:/.test(url) || /\.pdf($|\?)/i.test(url)) {
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
+      el.replaceWith(a);
+      if (card) {
+        card.classList.add('con-destino');
+        // Toda la tarjeta abre el destino.
+        card.addEventListener('click', (ev) => {
+          if (ev.target.closest('a')) return;
+          a.click();
+        });
+      }
+    });
+  }, []);
+
   // Red de seguridad: fuerza a mostrar los `.reveal` si el IntersectionObserver
   // del script legacy tarda en disparar al volver de otra ruta.
   useEffect(() => {
@@ -62,6 +107,15 @@ export default function Home() {
     }, 700);
     return () => clearTimeout(t);
   }, []);
+
+  // Los <a href="/..."> del HTML legacy navegan dentro de la app (sin recargar).
+  function onBodyClick(ev) {
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    const a = ev.target.closest('a[href^="/"]');
+    if (!a || a.target === '_blank') return;
+    ev.preventDefault();
+    navigate(a.getAttribute('href'));
+  }
 
   // Si la URL trae hash (ej. /#unete desde otra página), hace scroll ahí
   // una vez montado el contenido.
@@ -87,10 +141,11 @@ export default function Home() {
       <Nav />
 
       {/* Body de la home — todas las secciones, con animaciones y onclicks originales */}
-      <div
-        ref={wrapperRef}
-        dangerouslySetInnerHTML={{ __html: homeBody }}
-      />
+      <div ref={wrapperRef} onClick={onBodyClick}>
+        <div dangerouslySetInnerHTML={{ __html: homeBodyTop }} />
+        <InstitucionesRed compact />
+        <div dangerouslySetInnerHTML={{ __html: homeBodyBottom }} />
+      </div>
 
       {/* Footer como componente React real */}
       <Footer />

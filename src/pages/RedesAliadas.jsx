@@ -7,18 +7,19 @@ import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/redes.css';
 
 // ============================================================
-// Redes aliadas — datos (4 regiones, 12 redes)
+// Redes aliadas — datos (5 regiones, 12 redes)
 // ============================================================
 const REGIONS = [
   {
     id: 'global',
     num: '01',
+    nav: 'Global',
     title: 'Iniciativas',
     titleEm: 'globales',
     count: '3 organizaciones',
     redes: [
       {
-        href: 'https://www.unep.org/es',
+        href: 'https://www.lifecycleinitiative.org/',
         logo: '/assets/logos/unep.jpg',
         alt: 'UNEP Life Cycle Initiative',
         sig: 'UNEP LCI',
@@ -49,6 +50,7 @@ const REGIONS = [
   {
     id: 'iberoamerica',
     num: '02',
+    nav: 'Iberoamérica',
     title: 'Red',
     titleEm: 'iberoamericana',
     count: '2 organizaciones',
@@ -76,6 +78,7 @@ const REGIONS = [
   {
     id: 'latinoamerica',
     num: '03',
+    nav: 'Latinoamérica',
     title: 'Redes hermanas en',
     titleEm: 'Latinoamérica',
     count: '4 redes nacionales',
@@ -119,21 +122,32 @@ const REGIONS = [
     ],
   },
   {
-    id: 'mexico',
+    id: 'norteamerica',
     num: '04',
+    nav: 'Norteamérica',
     title: 'Aliados en',
-    titleEm: 'México',
-    count: '3 organizaciones',
+    titleEm: 'Norteamérica',
+    count: '1 organización',
     redes: [
       {
         href: 'https://www.aclca.org/',
         logo: '/assets/logos/aclca.png',
         alt: 'ACLCA',
         sig: 'ACLCA',
-        pais: 'EE. UU. · NA',
+        pais: 'EE. UU.',
         h3: 'American Center for Life Cycle Assessment',
         desc: 'Organización norteamericana dedicada a educación, divulgación e incidencia para fortalecer el ACV ambiental.',
       },
+    ],
+  },
+  {
+    id: 'mexico',
+    num: '05',
+    nav: 'México',
+    title: 'Aliados en',
+    titleEm: 'México',
+    count: '2 organizaciones',
+    redes: [
       {
         href: 'https://www.cadis.earth/',
         logo: '/assets/logos/cadis.jpg',
@@ -209,12 +223,7 @@ export default function RedesAliadas() {
       >
         <div className="region-nav reveal d3">
           {REGIONS.map((r) => (
-            <a key={r.id} href={`#${r.id}`}>
-              {r.id === 'global' ? 'Global'
-                : r.id === 'iberoamerica' ? 'Iberoamérica'
-                : r.id === 'latinoamerica' ? 'Latinoamérica'
-                : 'México'}
-            </a>
+            <a key={r.id} href={`#${r.id}`}>{r.nav}</a>
           ))}
         </div>
       </PageHeader>
