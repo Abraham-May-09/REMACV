@@ -8,22 +8,34 @@ import '../styles/miembros.css';
 const REPETICIONES = 3;
 
 function Logo({ inst }) {
+  const Tag = inst.sitio ? 'a' : 'div';
+  const enlace = inst.sitio
+    ? { href: inst.sitio, target: '_blank', rel: 'noopener noreferrer', tabIndex: -1 }
+    : {};
   return (
-    <li className="inst-item" title={inst.nombre}>
-      <div className={`inst-logo ${inst.logo ? '' : 'inst-logo-text'}`.trim()}>
-        {inst.logo ? (
-          <img
-            src={inst.logo}
-            alt=""
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            className={inst.invertir ? 'invertir' : undefined}
-          />
-        ) : (
-          <span className="inst-logo-sigla">{inst.sigla}</span>
-        )}
-      </div>
-      <span className="inst-sig">{inst.sigla}</span>
+    <li className="inst-item">
+      <Tag className={`inst-card ${inst.sitio ? '' : 'sin-sitio'}`.trim()} title={inst.nombre} {...enlace}>
+        <span className={`inst-logo ${inst.logo ? '' : 'inst-logo-text'}`.trim()}>
+          {inst.logo ? (
+            <img
+              src={inst.logo}
+              alt=""
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              className={inst.invertir ? 'invertir' : undefined}
+            />
+          ) : (
+            <span className="inst-logo-sigla">{inst.sigla}</span>
+          )}
+        </span>
+        <span className="inst-card-foot">
+          <span className="inst-card-txt">
+            <span className="inst-sig">{inst.sigla}</span>
+            <span className="inst-nom">{inst.nombre}</span>
+          </span>
+          {inst.sitio && <span className="inst-go" aria-hidden="true">↗</span>}
+        </span>
+      </Tag>
     </li>
   );
 }
@@ -69,15 +81,24 @@ export default function InstitucionesRed({ compact = false }) {
           </h2>
           <p className="section-lede reveal d2">
             Universidades, centros de investigación y empresas a los que pertenecen
-            las personas que integran la REMACV.
+            las personas que integran la REMACV. Haz clic en un logotipo para
+            visitar su sitio.
           </p>
         </div>
       </div>
 
-      {/* Lista para lectores de pantalla; el carrusel es decorativo. */}
+      {/* Lista para teclado y lectores de pantalla; el carrusel es visual. */}
       <ul className="inst-sr">
         {items.map((inst) => (
-          <li key={inst.nombre}>{inst.nombre}</li>
+          <li key={inst.nombre}>
+            {inst.sitio ? (
+              <a href={inst.sitio} target="_blank" rel="noopener noreferrer">
+                {inst.nombre} (abre su sitio en otra pestaña)
+              </a>
+            ) : (
+              inst.nombre
+            )}
+          </li>
         ))}
       </ul>
 
