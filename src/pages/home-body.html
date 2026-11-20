@@ -739,7 +739,8 @@
       </div>
       <div class="reveal d1">
         <form class="nl-form" onsubmit="subscribeNL(event)">
-          <input type="email" id="nl-email" placeholder="tu@correo.mx" required />
+          <input type="email" id="nl-email" placeholder="tu@correo.mx" autocomplete="email" required />
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="campo-trampa" />
           <button type="submit">Suscribirme</button>
         </form>
         <p class="nl-note">Cero spam. Puedes darte de baja en cualquier momento.</p>
@@ -807,7 +808,11 @@
               <label for="f-msg">¿Por qué te interesa?</label>
               <textarea id="f-msg" rows="3"></textarea>
             </div>
+            <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="campo-trampa" />
             <button class="submit-btn" id="submitBtn" onclick="submitForm()">Enviar solicitud</button>
+            <p id="formError" style="display: none; font-size: 12.5px; color: #9b2520; margin-top: 12px; text-align: center; line-height: 1.5;">
+              No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a contacto@remacv.mx.
+            </p>
             <p style="font-size: 11px; color: #738a7e; margin-top: 14px; text-align: center; letter-spacing: .04em;">
               Tus datos se usarán únicamente para fines de la red.
             </p>

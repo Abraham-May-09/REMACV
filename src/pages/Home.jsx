@@ -4,6 +4,7 @@ import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import InstitucionesRed from '../components/InstitucionesRed.jsx';
 import { DESTINOS } from '../data/destinos.js';
+import { FORMS_WEBHOOK_URL } from '../data/formularios.js';
 import usePageMeta from '../hooks/usePageMeta.js';
 import '../styles/home.css';
 
@@ -36,6 +37,7 @@ export default function Home() {
     const script = document.createElement('script');
     script.dataset.remacvHome = '1';
     // IIFE: evita redeclarar los const de nivel superior al re-montar.
+    window.__REMACV_FORMS_URL = FORMS_WEBHOOK_URL;
     script.textContent =
       ';(function(){\n' +
       homeScripts +

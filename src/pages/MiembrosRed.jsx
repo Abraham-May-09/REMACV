@@ -17,11 +17,6 @@ function normaliza(s) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
 
-function iniciales(nombre, apellidos) {
-  const n = nombre.replace(apellidos, '').trim().split(/\s+/)[0] || '';
-  return (n[0] || '') + (apellidos[0] || '');
-}
-
 const ROL = {
   fundadora: 'Socia fundadora',
   comite: 'Comité ejecutivo',
@@ -70,25 +65,26 @@ export default function MiembrosRed() {
       <section className="section-pad directorio" id="directorio">
         <div className="container">
           <div className="dir-tools reveal">
-            <label className="dir-field">
-              <span>Buscar por nombre</span>
+            <div className="field">
+              <label htmlFor="dir-q">Buscar por nombre</label>
               <input
+                id="dir-q"
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Escribe un nombre o apellido"
                 autoComplete="off"
               />
-            </label>
-            <label className="dir-field">
-              <span>Institución</span>
-              <select value={inst} onChange={(e) => setInst(e.target.value)}>
+            </div>
+            <div className="field">
+              <label htmlFor="dir-inst">Institución</label>
+              <select id="dir-inst" value={inst} onChange={(e) => setInst(e.target.value)}>
                 <option value="">Todas las instituciones</option>
                 {OPCIONES.map((o) => (
                   <option key={o.key} value={o.key}>{o.nombre}</option>
                 ))}
               </select>
-            </label>
+            </div>
             <p className="dir-count" aria-live="polite">
               {lista.length === ORDENADOS.length
                 ? `${ORDENADOS.length} personas`
@@ -102,21 +98,19 @@ export default function MiembrosRed() {
                 const i = INSTITUCIONES[m.inst];
                 return (
                   <li className="dir-card" key={m.nombre}>
-                    <span className="dir-avatar" aria-hidden="true">
-                      {iniciales(m.nombre, m.apellidos)}
-                    </span>
-                    <div className="dir-body">
-                      <h3>{m.nombre}</h3>
-                      <p className="dir-inst">{i.nombre}</p>
+                    <div className="dir-head">
+                      <span className="dir-sig">{i.sigla}</span>
                       {m.rol && <span className="dir-rol">{ROL[m.rol]}</span>}
                     </div>
+                    <h3>{m.nombre}</h3>
+                    <p className="dir-inst">{i.nombre}</p>
                   </li>
                 );
               })}
             </ul>
           ) : (
             <p className="dir-empty">
-              No encontramos personas con esos criterios.{' '}
+              No encontramos personas con esos criterios.
               <button type="button" onClick={() => { setQ(''); setInst(''); }}>
                 Limpiar filtros
               </button>

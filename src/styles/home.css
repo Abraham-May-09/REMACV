@@ -1625,6 +1625,9 @@
     transition: background .25s ease, transform .25s ease;
   }
   .submit-btn:hover { background: var(--green); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: .7; cursor: wait; transform: none; }
+  /* Campo oculto anti-spam: los bots lo llenan, las personas no lo ven */
+  .campo-trampa { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
 
   /* ============================================================
      FOOTER
