@@ -1,7 +1,7 @@
 # ============================================================
 # MODO MANTENIMIENTO (activado 2026-11-20)
 # - El público ve /mantenimiento.html (HTTP 503 + Retry-After).
-# - Vista previa: abrir https://remacv.mx/?vista=771ae9719d
+# - Vista previa: abrir https://remacv.mx/?vista=CLAVE_EN_SERVIDOR
 #   guarda una cookie por 7 días y deja ver el sitio completo.
 # - Para desactivar: restaurar .htaccess.respaldo-2026-11-20
 # ============================================================
@@ -16,12 +16,12 @@ ErrorDocument 503 /mantenimiento.html
   RewriteBase /
 
   # Enlace de vista previa -> cookie de 7 días (10080 min)
-  RewriteCond %{QUERY_STRING} (^|&)vista=771ae9719d(&|$)
-  RewriteRule ^ - [CO=remacv_vista:771ae9719d:remacv.mx:10080:/,E=REMACV_VISTA:1]
+  RewriteCond %{QUERY_STRING} (^|&)vista=CLAVE_EN_SERVIDOR(&|$)
+  RewriteRule ^ - [CO=remacv_vista:CLAVE_EN_SERVIDOR:remacv.mx:10080:/,E=REMACV_VISTA:1]
 
   # Sin cookie ni enlace -> aviso de mantenimiento
   RewriteCond %{ENV:REMACV_VISTA} !=1
-  RewriteCond %{HTTP_COOKIE} !(^|;\s*)remacv_vista=771ae9719d
+  RewriteCond %{HTTP_COOKIE} !(^|;\s*)remacv_vista=CLAVE_EN_SERVIDOR
   RewriteCond %{REQUEST_URI} !^/mantenimiento\.html$
   RewriteCond %{REQUEST_URI} !^/assets/remacv-mark\.png$
   RewriteCond %{REQUEST_URI} !^/robots\.txt$
