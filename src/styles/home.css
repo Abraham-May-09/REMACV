@@ -633,6 +633,17 @@
   .tema p {
     font-size: 14.5px; line-height: 1.6; color: #5b6c61;
   }
+  /* Destinos de «Explorar» / «Leer» (ver src/data/destinos.js) */
+  .tema.con-destino { cursor: pointer; }
+  .especial.sin-destino { cursor: default; }
+  .tema .is-pending,
+  .especial .is-pending {
+    opacity: .55;
+    font-style: italic;
+  }
+  .tema.sin-destino:hover .read-more,
+  .especial.sin-destino:hover .arrow { gap: 8px; }
+
   .tema .read-more {
     margin-top: 22px;
     display: inline-flex; align-items: center; gap: 8px;

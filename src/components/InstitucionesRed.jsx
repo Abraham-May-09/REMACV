@@ -7,7 +7,13 @@ function InstTile({ inst }) {
     <li className="inst-tile" title={inst.nombre}>
       <div className={`inst-logo ${inst.logo ? '' : 'inst-logo-text'}`.trim()}>
         {inst.logo ? (
-          <img src={inst.logo} alt={inst.nombre} loading="lazy" />
+          <img
+            src={inst.logo}
+            alt={inst.nombre}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            className={inst.invertir ? 'invertir' : undefined}
+          />
         ) : (
           <span className="inst-sigla">{inst.sigla}</span>
         )}

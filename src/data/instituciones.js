@@ -1,21 +1,26 @@
 // ============================================================
 // Instituciones y organizaciones representadas en la red.
 //
-// Para usar el logotipo oficial de una institución, coloca el archivo en
-// public/assets/instituciones/ y escribe su ruta en `logo`. Mientras `logo`
-// esté vacío se muestra una tarjeta tipográfica con la sigla.
+// `logo`: logotipo tomado del sitio oficial de cada institución (noviembre
+// 2026). Para alojarlo en el propio sitio, coloca el archivo en
+// public/assets/instituciones/ y cambia aquí la ruta. Mientras `logo` esté
+// vacío se muestra una tarjeta con la sigla.
+// `invertir`: muestra en oscuro un logotipo que solo existe en blanco.
+//
+// Pendientes: Tecnológico de Monterrey (su sitio no publica el logotipo como
+// archivo) y UABJ (falta identificar la fuente oficial).
 // ============================================================
 
 export const INSTITUCIONES = {
   IPN: {
     sigla: 'IPN',
     nombre: 'Instituto Politécnico Nacional',
-    logo: '',
+    logo: 'https://ipn.mx/assets/files/main/img/template/header/logo-ipn-horizontal.svg',
   },
   UAM: {
     sigla: 'UAM',
     nombre: 'Universidad Autónoma Metropolitana',
-    logo: '',
+    logo: 'https://www.uam.mx/_imgstc/logouam-variacion6.png',
   },
   TEC: {
     sigla: 'Tec',
@@ -30,37 +35,38 @@ export const INSTITUCIONES = {
   UANL: {
     sigla: 'UANL',
     nombre: 'Universidad Autónoma de Nuevo León',
-    logo: '',
+    logo: 'https://www.uanl.mx/wp-content/uploads/2020/06/uanl.png',
   },
   UNAM: {
     sigla: 'UNAM',
     nombre: 'Universidad Nacional Autónoma de México',
-    logo: '',
+    logo: 'https://www.iingen.unam.mx/es-mx/Paginas/Splash/images/Logo-UNAM.svg',
   },
   II_UNAM: {
     sigla: 'II UNAM',
     nombre: 'Instituto de Ingeniería, UNAM',
-    logo: '',
+    logo: 'https://www.iingen.unam.mx/es-mx/Paginas/Splash/images/Logo-Instituto.svg',
   },
   ENES_MORELIA: {
     sigla: 'ENES Morelia',
     nombre: 'ENES Unidad Morelia, UNAM',
-    logo: '',
+    logo: 'https://enesmorelia.unam.mx/wp-content/themes/ENESTHEME/theme_assets/images_enes/home/logo-enes-text.png',
+    invertir: true, // el original es blanco; se muestra en oscuro
   },
   UDEM: {
     sigla: 'UDEM',
     nombre: 'Universidad de Monterrey',
-    logo: '',
+    logo: 'https://www.udem.edu.mx/themes/custom/udm/svg/general/logo.png',
   },
   UADY: {
     sigla: 'UADY',
     nombre: 'Universidad Autónoma de Yucatán',
-    logo: '',
+    logo: 'https://uady.mx/assets/img/logo_uady.svg',
   },
   UAEMEX: {
     sigla: 'UAEMéx',
     nombre: 'Universidad Autónoma del Estado de México',
-    logo: '',
+    logo: 'https://www.uaemex.mx/images/2025/logos/escudo_w.jpg',
   },
   CADIS: {
     sigla: 'CADIS',
@@ -70,12 +76,12 @@ export const INSTITUCIONES = {
   EARTHSHIFT: {
     sigla: 'EarthShift',
     nombre: 'EarthShift Global',
-    logo: '',
+    logo: 'https://earthshiftglobal.com/images/earthshift_logo.svg',
   },
   UMA: {
     sigla: 'UMA',
     nombre: 'Universidad del Medio Ambiente',
-    logo: '',
+    logo: 'https://static.wixstatic.com/media/14900b_30f8b27d8b3e4cc694f7bf8b8006d637~mv2.png',
   },
   UABJ: {
     sigla: 'UABJ',
