@@ -33,6 +33,7 @@ export default function Footer() {
             <Link className="foot-link" to="/">Inicio</Link>
             <Link className="foot-link" to="/eventos">Eventos</Link>
             <Link className="foot-link" to="/publicaciones">Publicaciones</Link>
+            <Link className="foot-link" to="/miembros">Miembros de la red</Link>
             <Link className="foot-link" to="/redes">Redes aliadas</Link>
           </div>
           
@@ -40,10 +41,10 @@ export default function Footer() {
             <h4>Contacto</h4>
             <a
               className="foot-link"
-              href="mailto:redmexicanadeciclodevida@gmail.com"
+              href="mailto:contacto@remacv.mx"
               style={{ wordBreak: 'break-word' }}
             >
-              redmexicanadeciclodevida<br/>@gmail.com
+              contacto@remacv.mx
             </a>
             <a
               className="foot-link"
@@ -52,6 +53,22 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               Instituto de Ingeniería<br/>UNAM · CDMX
+            </a>
+          </div>
+
+          <div className="foot-intl">
+            <h4>Vinculación internacional</h4>
+            <a
+              className="foot-intl-card"
+              href="https://rediberoamericanacv.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="foot-intl-logo">
+                <img src="/assets/logos/ricv.png" alt="" loading="lazy" />
+              </span>
+              <span className="foot-intl-name">Red Iberoamericana de Ciclo de Vida</span>
+              <span className="foot-intl-url">rediberoamericanacv.net ↗</span>
             </a>
           </div>
         </div>

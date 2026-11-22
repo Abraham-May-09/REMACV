@@ -1,87 +1,91 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import useReveal from '../hooks/useReveal.js';
 import useScrollProgress from '../hooks/useScrollProgress.js';
 import usePageMeta from '../hooks/usePageMeta.js';
+import { EVENTOS, TIPOS_EVENTO } from '../data/eventos.js';
 import '../styles/eventos.css';
 
-// ============================================================
-// DATOS DE EVENTOS — fiel al WordPress original (solo resumen)
-// ============================================================
-const EVENTS = [
-  {
-    id: 'webinars',
-    thumb: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=600&q=85&auto=format&fit=crop',
-    thumbContain: false,
-    kind: 'webinar',
-    kindLabel: 'Webinars',
-    title: 'Webinars ACV',
-    loc: 'En línea · Red Iberoamericana de Ciclo de Vida',
-    tagline: 'Serie de webinars sobre el pensamiento de ciclo de vida realizada en 2019.',
-  },
-  {
-    id: 'cilca-2019',
-    thumb: '/assets/events/cilca-2019.jpg',
-    thumbContain: true,
-    kind: 'conferencia',
-    kindLabel: 'Conferencia Internacional',
-    title: 'CILCA 2019 — ACV para la Competitividad Global',
-    loc: 'VIII Conferencia Internacional de ACV en Latinoamérica · Costa Rica',
-    tagline: 'Edición bienal con expertos de toda Iberoamérica y participación REMACV.',
-  },
-  {
-    id: 'amica-gin-2019',
-    thumb: '/assets/events/amica-2019.jpg',
-    thumbContain: true,
-    kind: 'congreso',
-    kindLabel: 'Congreso · Ciudad de México',
-    title: 'Congreso AMICA-GIN 2019',
-    loc: '4° Congreso de Ingeniería Ambiental + 5° GIN Conference · 28–30 de octubre 2019',
-    tagline: '"Ambiente y Gobernanza: Innovación para la sostenibilidad"',
-  },
-  {
-    id: 'ecodal-2018',
-    thumb: '/assets/events/ecodal-2018.png',
-    thumbContain: true,
-    kind: 'encuentro',
-    kindLabel: 'Encuentro · Puebla',
-    title: 'EcodAL Puebla 2018',
-    loc: 'Encuentro de Ecodiseño en América Latina · Puebla, México',
-    tagline: 'Mesa de integración de ACV en procesos de diseño sustentable.',
-  },
-  {
-    id: 'seminario-honduras-2018',
-    thumb: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=85&auto=format&fit=crop',
-    thumbContain: false,
-    kind: 'seminario',
-    kindLabel: 'Seminario Internacional',
-    title: '6° Seminario Internacional de Análisis de Ciclo de Vida',
-    loc: 'Honduras · 24–25 de octubre de 2018',
-    tagline: 'Sexta edición con participación de redes iberoamericanas, centroamericanas y sudamericanas.',
-  },
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const parte = (iso) => iso.split('-').map(Number);
+
+// «28–30 oct 2019», «26 jun – 10 jul 2019», «22 nov 2017»
+function rango(inicio, fin) {
+  const [a1, m1, d1] = parte(inicio);
+  if (!fin) return `${d1} ${MESES[m1 - 1]} ${a1}`;
+  const [a2, m2, d2] = parte(fin);
+  if (a1 === a2 && m1 === m2) return `${d1}–${d2} ${MESES[m1 - 1]} ${a1}`;
+  if (a1 === a2) return `${d1} ${MESES[m1 - 1]} – ${d2} ${MESES[m2 - 1]} ${a1}`;
+  return `${d1} ${MESES[m1 - 1]} ${a1} – ${d2} ${MESES[m2 - 1]} ${a2}`;
+}
+
+const ORDENADOS = [...EVENTOS].sort((a, b) => b.inicio.localeCompare(a.inicio));
+const HOY = new Date().toISOString().slice(0, 10);
+const PROXIMOS = ORDENADOS.filter((e) => (e.fin || e.inicio) >= HOY).reverse();
+const PASADOS = ORDENADOS.filter((e) => (e.fin || e.inicio) < HOY);
+const DESTACADO = PASADOS[0];
+
+const ANIOS = PASADOS.map((e) => Number(e.inicio.slice(0, 4)));
+const FILTROS = [
+  ['', 'Todos'],
+  ['organiza', 'Organizados por la REMACV'],
+  ...Object.entries(TIPOS_EVENTO),
 ];
 
-function EventCard({ ev, delay }) {
+function Portada({ ev, grande = false }) {
+  if (ev.imagen) {
+    return (
+      <span className={`evt-img ${ev.ajuste === 'contain' ? 'contain' : ''}`.trim()}>
+        <img src={ev.imagen} alt="" loading={grande ? 'eager' : 'lazy'} />
+      </span>
+    );
+  }
   return (
-    <article className={`event-card reveal ${delay}`.trim()} id={ev.id}>
-      <div className="event-card-inner">
-        <div className="event-thumb">
-          <img
-            src={ev.thumb}
-            alt={ev.title}
-            loading="lazy"
-            className={ev.thumbContain ? 'contain' : ''}
-          />
-        </div>
-        <div className="event-body">
-          <span className="event-kind" data-kind={ev.kind}>{ev.kindLabel}</span>
-          <h3>{ev.title}</h3>
-          <span className="loc">{ev.loc}</span>
-          <p className="tagline">{ev.tagline}</p>
-        </div>
-      </div>
-    </article>
+    <span className="evt-img evt-img-marca" aria-hidden="true">
+      <img src="/assets/remacv-mark.png" alt="" />
+      <span>{TIPOS_EVENTO[ev.tipo]}</span>
+    </span>
+  );
+}
+
+function Acciones({ ev }) {
+  if (!ev.publicacion && !ev.sitio) return null;
+  return (
+    <div className="evt-acciones">
+      {ev.publicacion && (
+        <Link to={`/publicaciones/${ev.publicacion}`} className="evt-btn">
+          Leer anuncio <span aria-hidden="true">→</span>
+        </Link>
+      )}
+      {ev.sitio && (
+        <a href={ev.sitio} target="_blank" rel="noopener noreferrer" className="evt-btn evt-btn-sec">
+          Sitio del evento <span aria-hidden="true">↗</span>
+        </a>
+      )}
+    </div>
+  );
+}
+
+function Etiquetas({ ev }) {
+  return (
+    <div className="evt-tags">
+      <span className="evt-tipo" data-tipo={ev.tipo}>{TIPOS_EVENTO[ev.tipo]}</span>
+      {ev.organiza && <span className="evt-org">Organizado por la REMACV</span>}
+    </div>
+  );
+}
+
+function Lugar({ ev }) {
+  return (
+    <p className="evt-lugar">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+      </svg>
+      {ev.lugar}
+    </p>
   );
 }
 
@@ -91,9 +95,27 @@ export default function Eventos() {
 
   usePageMeta({
     title: 'Eventos · REMACV',
-    description: 'Conferencias, webinars, congresos y seminarios de Análisis de Ciclo de Vida en México e Iberoamérica organizados o respaldados por la REMACV.',
+    description: 'Seminarios, congresos, conferencias y webinars de Análisis de Ciclo de Vida organizados o acompañados por la REMACV desde 2011.',
     path: '/eventos',
   });
+
+  const [filtro, setFiltro] = useState('');
+
+  const porAnio = useMemo(() => {
+    const lista = PASADOS.filter((e) =>
+      !filtro ? true : filtro === 'organiza' ? e.organiza : e.tipo === filtro
+    );
+    const grupos = [];
+    lista.forEach((e) => {
+      const a = e.inicio.slice(0, 4);
+      const g = grupos.find((x) => x.anio === a);
+      g ? g.eventos.push(e) : grupos.push({ anio: a, eventos: [e] });
+    });
+    return grupos;
+  }, [filtro]);
+
+  const cuenta = (k) =>
+    !k ? PASADOS.length : k === 'organiza' ? PASADOS.filter((e) => e.organiza).length : PASADOS.filter((e) => e.tipo === k).length;
 
   return (
     <>
@@ -102,19 +124,109 @@ export default function Eventos() {
 
       <PageHeader
         crumb="Eventos"
-        title="Eventos."
-        lede="Webinars, conferencias, congresos y seminarios donde la comunidad ACV ha compartido avances, casos de estudio y formación."
+        title={<>Eventos <em>de la red.</em></>}
+        lede="Seminarios, congresos, conferencias y webinars donde la comunidad de ACV ha compartido avances, casos de estudio y formación desde 2011."
       />
 
-      <section className="section-pad">
+      {/* Evento más reciente (sobre el borde del encabezado, como en Publicaciones) */}
+      {DESTACADO && (
+        <section className="evt-destacado-wrap">
+          <div className="container">
+            <article className="evt-destacado reveal">
+              <Portada ev={DESTACADO} grande />
+              <div className="evt-destacado-body">
+                <span className="evt-kicker">Evento más reciente</span>
+                <Etiquetas ev={DESTACADO} />
+                <h2>{DESTACADO.titulo}</h2>
+                <p className="evt-sub">{DESTACADO.subtitulo}</p>
+                <p className="evt-cuando">{rango(DESTACADO.inicio, DESTACADO.fin)}</p>
+                <Lugar ev={DESTACADO} />
+                <p className="evt-desc">{DESTACADO.descripcion}</p>
+                <Acciones ev={DESTACADO} />
+              </div>
+            </article>
+          </div>
+        </section>
+      )}
+
+      {/* Trayectoria */}
+      <section className="section-pad evt-trayectoria" id="trayectoria">
         <div className="container">
-          <div className="events-list">
-            {EVENTS.map((ev, i) => (
-              <EventCard
-                key={ev.id}
-                ev={ev}
-                delay={['', 'd1', 'd2', 'd3', 'd3'][i] || ''}
-              />
+          <div className="evt-proximos reveal" id="proximos">
+            <div className="evt-proximos-txt">
+              <span className="section-eyebrow">Próximos eventos</span>
+              {PROXIMOS.length ? (
+                <ul className="evt-proximos-lista">
+                  {PROXIMOS.map((e) => (
+                    <li key={e.id}>
+                      <span className="evt-fecha-chip">{rango(e.inicio, e.fin)}</span>
+                      <strong>{e.titulo}</strong>
+                      <Lugar ev={e} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <>
+                  <h2>Muy pronto, nuevas fechas.</h2>
+                  <p>
+                    Estamos preparando la siguiente agenda de seminarios y encuentros de la red.
+                    Suscríbete al boletín para enterarte primero.
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="evt-acciones">
+              <Link to="/#newsletter" className="evt-btn">Suscribirme <span aria-hidden="true">→</span></Link>
+              <a href="mailto:contacto@remacv.mx?subject=Propuesta%20de%20evento" className="evt-btn evt-btn-sec">
+                Proponer un evento
+              </a>
+            </div>
+          </div>
+
+          <div className="evt-tray-head">
+            <div>
+              <div className="reveal"><span className="section-eyebrow">Trayectoria</span></div>
+              <h2 className="section-title reveal d1">Una red que se <em>encuentra.</em></h2>
+            </div>
+            <div className="evt-filtros reveal d2" role="group" aria-label="Filtrar eventos">
+              {FILTROS.map(([k, label]) =>
+                cuenta(k) ? (
+                  <button
+                    type="button"
+                    key={k || 'todos'}
+                    className={filtro === k ? 'activo' : ''}
+                    onClick={() => setFiltro(k)}
+                  >
+                    {label} <span>{cuenta(k)}</span>
+                  </button>
+                ) : null
+              )}
+            </div>
+          </div>
+
+          <div className="evt-timeline">
+            {porAnio.map((g) => (
+              <div className="evt-anio" key={g.anio}>
+                <div className="evt-anio-marca"><span>{g.anio}</span></div>
+                <div className="evt-anio-lista">
+                  {g.eventos.map((e) => (
+                    <article className="evt-card" key={e.id} id={e.id}>
+                      <Portada ev={e} />
+                      <div className="evt-card-body">
+                        <div className="evt-card-top">
+                          <Etiquetas ev={e} />
+                          <span className="evt-fecha">{rango(e.inicio, e.fin)}</span>
+                        </div>
+                        <h3>{e.titulo}</h3>
+                        {e.subtitulo && <p className="evt-sub">{e.subtitulo}</p>}
+                        <Lugar ev={e} />
+                        <p className="evt-desc">{e.descripcion}</p>
+                        <Acciones ev={e} />
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
