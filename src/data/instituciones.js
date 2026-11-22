@@ -7,9 +7,7 @@
 // vacío se muestra una tarjeta con la sigla.
 // `invertir`: muestra en oscuro un logotipo que solo existe en blanco.
 // `sitio`: página oficial; al hacer clic en el logotipo se abre en otra pestaña.
-//
-// Pendientes: Tecnológico de Monterrey (su sitio no publica el logotipo como
-// archivo) y UABJ (falta identificar la fuente oficial).
+
 // ============================================================
 
 export const INSTITUCIONES = {
@@ -29,7 +27,7 @@ export const INSTITUCIONES = {
     sigla: 'Tec',
     nombre: 'Tecnológico de Monterrey',
     sitio: 'https://tec.mx/es',
-    logo: '',
+    logo: '/assets/instituciones/tec.png',
   },
   TEC_QRO: {
     sigla: 'Tec',
@@ -100,9 +98,9 @@ export const INSTITUCIONES = {
   },
   UABJ: {
     sigla: 'UABJ',
-    nombre: 'UABJ',
-    sitio: '',
-    logo: '',
+    nombre: 'Universidad Autónoma Benito Juárez de Oaxaca',
+    sitio: 'https://www.uabjo.mx/',
+    logo: '/assets/instituciones/uabj.jpg',
   },
 };
 

@@ -1,8 +1,8 @@
 // ============================================================
-// Destino de los formularios (newsletter y membresía).
+// Destino de los formularios (boletín y membresía).
 //
-// Es la «Production URL» del nodo Webhook del flujo de n8n
-// «REMACV · Formularios del sitio» (ver n8n/remacv-formularios.json).
-// Ejemplo: 'https://n8n.midominio.com/webhook/remacv-formularios'
+// public/api/formulario.php vive en el propio hosting: valida, descarta
+// spam y envía el correo desde contacto@remacv.mx. Los destinatarios se
+// configuran al inicio de ese archivo.
 // ============================================================
-export const FORMS_WEBHOOK_URL = '';
+export const FORMS_WEBHOOK_URL = '/api/formulario.php';

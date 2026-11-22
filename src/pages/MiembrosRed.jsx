@@ -17,6 +17,11 @@ function normaliza(s) {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 }
 
+function iniciales(nombre, apellidos) {
+  const n = nombre.replace(apellidos, '').trim().split(/\s+/)[0] || '';
+  return ((n[0] || '') + (apellidos[0] || '')).toUpperCase();
+}
+
 const ROL = {
   fundadora: 'Socia fundadora',
   comite: 'Comité ejecutivo',
@@ -98,6 +103,13 @@ export default function MiembrosRed() {
                 const i = INSTITUCIONES[m.inst];
                 return (
                   <li className="dir-card" key={m.nombre}>
+                    <div className={`dir-foto ${m.foto ? '' : 'sin-foto'}`.trim()}>
+                      {m.foto ? (
+                        <img src={m.foto} alt={m.nombre} loading="lazy" />
+                      ) : (
+                        <span aria-hidden="true">{iniciales(m.nombre, m.apellidos)}</span>
+                      )}
+                    </div>
                     <div className="dir-head">
                       <span className="dir-sig">{i.sigla}</span>
                       {m.rol && <span className="dir-rol">{ROL[m.rol]}</span>}
