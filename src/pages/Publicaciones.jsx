@@ -16,7 +16,25 @@ export function fechaLarga(iso) {
   });
 }
 
-const ORDENADAS = [...PUBLICACIONES].sort((a, b) => b.fecha.localeCompare(a.fecha));
+export const ORDENADAS = [...PUBLICACIONES].sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+const normaliza = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+export function Miniatura({ p, grande = false }) {
+  if (p.imagen) {
+    return (
+      <span className={`pub-thumb ${p.ajuste === 'contain' ? 'contain' : ''}`.trim()}>
+        <img src={p.imagen} alt="" loading={grande ? 'eager' : 'lazy'} />
+      </span>
+    );
+  }
+  return (
+    <span className="pub-thumb pub-thumb-marca" aria-hidden="true">
+      <img src="/assets/remacv-mark.png" alt="" />
+      <span>{TIPOS[p.tipo]}</span>
+    </span>
+  );
+}
 
 export default function Publicaciones() {
   useScrollProgress();
@@ -24,12 +42,24 @@ export default function Publicaciones() {
 
   usePageMeta({
     title: 'Publicaciones · REMACV',
-    description: 'Artículos, anuncios, convocatorias y recursos publicados por la Red Mexicana de Análisis de Ciclo de Vida.',
+    description: 'Investigación, artículos, anuncios, convocatorias y recursos publicados por la Red Mexicana de Análisis de Ciclo de Vida.',
     path: '/publicaciones',
   });
 
   const [tipo, setTipo] = useState('');
-  const lista = useMemo(() => ORDENADAS.filter((p) => !tipo || p.tipo === tipo), [tipo]);
+  const [q, setQ] = useState('');
+  const destacada = ORDENADAS.find((p) => p.destacado);
+
+  const lista = useMemo(() => {
+    const nq = normaliza(q.trim());
+    return ORDENADAS.filter(
+      (p) =>
+        (!tipo || p.tipo === tipo) &&
+        (!nq || normaliza(`${p.titulo} ${p.resumen} ${p.autores || ''}`).includes(nq)) &&
+        (tipo || nq || p !== destacada)
+    );
+  }, [tipo, q, destacada]);
+
   const conteo = (t) => ORDENADAS.filter((p) => p.tipo === t).length;
 
   return (
@@ -40,8 +70,30 @@ export default function Publicaciones() {
       <PageHeader
         crumb="Publicaciones"
         title={<>Publicaciones <em>de la red.</em></>}
-        lede="Artículos, anuncios, convocatorias y recursos publicados por la Red Mexicana de Análisis de Ciclo de Vida."
+        lede="Investigación, artículos, anuncios, convocatorias y recursos publicados por la Red Mexicana de Análisis de Ciclo de Vida."
       />
+
+      {destacada && (
+        <section className="pubs-destacada-wrap">
+          <div className="container">
+            <Link to={`/publicaciones/${destacada.slug}`} className="pub-destacada reveal">
+              <Miniatura p={destacada} grande />
+              <span className="pub-destacada-body">
+                <span className="pub-kicker">Publicación destacada</span>
+                <span className="pub-meta">
+                  <span className="pub-tipo" data-tipo={destacada.tipo}>{TIPOS[destacada.tipo]}</span>
+                  <time dateTime={destacada.fecha}>{fechaLarga(destacada.fecha)}</time>
+                </span>
+                <span className="pub-destacada-titulo">{destacada.titulo}</span>
+                {destacada.autores && <span className="pub-autores">{destacada.autores}</span>}
+                {destacada.revista && <span className="pub-revista">{destacada.revista}</span>}
+                <span className="pub-resumen">{destacada.resumen}</span>
+                <span className="pub-leer">Leer más <span aria-hidden="true">→</span></span>
+              </span>
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="section-pad pubs">
         <div className="container">
@@ -50,49 +102,65 @@ export default function Publicaciones() {
               <button type="button" className={!tipo ? 'activo' : ''} onClick={() => setTipo('')}>
                 Todas <span>{ORDENADAS.length}</span>
               </button>
-              {Object.entries(TIPOS).map(([k, label]) => (
-                <button
-                  type="button"
-                  key={k}
-                  className={tipo === k ? 'activo' : ''}
-                  onClick={() => setTipo(k)}
-                >
-                  {label} <span>{conteo(k)}</span>
-                </button>
-              ))}
+              {Object.entries(TIPOS).map(([k, label]) =>
+                conteo(k) ? (
+                  <button
+                    type="button"
+                    key={k}
+                    className={tipo === k ? 'activo' : ''}
+                    onClick={() => setTipo(k)}
+                  >
+                    {label} <span>{conteo(k)}</span>
+                  </button>
+                ) : null
+              )}
             </div>
-            <p className="pubs-nota">
-              Incluye el archivo del sitio anterior de la REMACV (2018–2019).
-            </p>
+            <label className="pubs-buscar">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="none" stroke="currentColor" strokeWidth="2" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm9 16-4.3-4.3" />
+              </svg>
+              <input
+                type="search"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Buscar publicaciones"
+                aria-label="Buscar publicaciones"
+              />
+            </label>
           </div>
 
-          <ul className="pubs-grid">
-            {lista.map((p) => (
-              <li key={p.slug} className="pub-card">
-                <Link to={`/publicaciones/${p.slug}`} className="pub-link">
-                  {p.imagen ? (
-                    <span className={`pub-thumb ${p.ajuste === 'contain' ? 'contain' : ''}`.trim()}>
-                      <img src={p.imagen} alt="" loading="lazy" />
+          {lista.length ? (
+            <ul className="pubs-grid">
+              {lista.map((p) => (
+                <li key={p.slug} className="pub-card" data-tipo={p.tipo}>
+                  <Link to={`/publicaciones/${p.slug}`} className="pub-link">
+                    <Miniatura p={p} />
+                    <span className="pub-body">
+                      <span className="pub-meta">
+                        <span className="pub-tipo" data-tipo={p.tipo}>{TIPOS[p.tipo]}</span>
+                        <time dateTime={p.fecha}>{fechaLarga(p.fecha)}</time>
+                      </span>
+                      <span className="pub-titulo">{p.titulo}</span>
+                      {p.autores && <span className="pub-autores">{p.autores}</span>}
+                      <span className="pub-resumen">{p.resumen}</span>
+                      <span className="pub-leer">Leer <span aria-hidden="true">→</span></span>
                     </span>
-                  ) : (
-                    <span className="pub-thumb pub-thumb-marca" aria-hidden="true">
-                      <img src="/assets/remacv-mark.png" alt="" />
-                      <span>{TIPOS[p.tipo]}</span>
-                    </span>
-                  )}
-                  <span className="pub-body">
-                    <span className="pub-meta">
-                      <span className="pub-tipo">{TIPOS[p.tipo]}</span>
-                      <time dateTime={p.fecha}>{fechaLarga(p.fecha)}</time>
-                    </span>
-                    <span className="pub-titulo">{p.titulo}</span>
-                    <span className="pub-resumen">{p.resumen}</span>
-                    <span className="pub-leer">Leer <span aria-hidden="true">→</span></span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="pubs-vacio">
+              No encontramos publicaciones con esos criterios.
+              <button type="button" onClick={() => { setQ(''); setTipo(''); }}>Ver todas</button>
+            </p>
+          )}
+
+          <p className="pubs-nota reveal">
+            Incluye el archivo del sitio anterior de la REMACV (2012–2019).
+            ¿Quieres compartir una publicación con la red? Escríbenos a{' '}
+            <a href="mailto:contacto@remacv.mx">contacto@remacv.mx</a>.
+          </p>
         </div>
       </section>
 

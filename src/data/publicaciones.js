@@ -2,19 +2,59 @@
 // Publicaciones — contenido migrado del sitio anterior de la REMACV
 // (redmexicanadeanalisdeciclodevida.wordpress.com), noviembre 2026.
 //
-// tipo: 'articulo' | 'convocatoria' | 'recurso'
+// tipo: 'investigacion' | 'articulo' | 'convocatoria' | 'recurso'
+// destacado: true para mostrarla grande al inicio del listado
+// autores, revista, doi: datos de citación (opcionales)
 // ajuste: 'contain' para mostrar la imagen completa en la tarjeta (carteles anchos)
 // html: cuerpo del artículo (HTML simple: p, ul, li, strong, em, a, h2-h4)
 // Para agregar una publicación nueva, copia un bloque y cambia los datos.
 // ============================================================
 
 export const TIPOS = {
+  investigacion: 'Investigación',
   articulo: 'Artículo',
   convocatoria: 'Anuncio y convocatoria',
   recurso: 'Recurso',
 };
 
 export const PUBLICACIONES = [
+  {
+    slug: 'lca-in-mexico-ijlca-2015',
+    tipo: 'investigacion',
+    destacado: true,
+    titulo: 'Life cycle assessment in Mexico: overview of development and implementation',
+    autores: 'Leonor Patricia Güereca, Ricardo Ochoa Sosa, Haley E. Gilbert, Nydia Suppen Reynaga',
+    revista: 'The International Journal of Life Cycle Assessment, 20, 311–317 (2015)',
+    doi: '10.1007/s11367-014-0844-9',
+    fecha: '2015-01-21',
+    resumen:
+      'Revisión de cómo ha evolucionado el análisis de ciclo de vida en México desde 1999: quiénes lo han impulsado y en qué sectores se ha aplicado.',
+    imagen: '/assets/events/historico/ijlca-2014.png',
+    ajuste: 'cover',
+    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/acerca-de/actividades-de-la-red-mexicana-de-acv/',
+    externo: 'https://doi.org/10.1007/s11367-014-0844-9',
+    html: `
+<p>Artículo de discusión publicado en <em>The International Journal of Life Cycle Assessment</em> por integrantes de la red, entre ellos sus socias fundadoras Leonor Patricia Güereca y Nydia Suppen Reynaga.</p>
+<p>El trabajo parte de una observación: desde 1999 ha habido avances en el uso del ACV en México —capacitación, investigación y aplicación del pensamiento de ciclo de vida en el gobierno, la industria y la academia—, pero en su mayoría como iniciativas aisladas, lo que ha dado la impresión de que el progreso ha sido mínimo.</p>
+<p>Entre sus hallazgos, describe que hasta 2010 la investigación y la academia encabezaron los esfuerzos, con énfasis en el manejo de residuos, y que después de ese año el interés se amplió a los sistemas energéticos, la huella de carbono y de agua, y el sector de la construcción. En el sector privado, el interés temprano vino de empresas con presencia en mercados internacionales, como CEMEX, la minería, la industria del calzado, PEMEX y la Comisión Federal de Electricidad.</p>
+<p>Recibido el 27 de noviembre de 2014, aceptado el 29 de diciembre de 2014 y publicado en línea el 21 de enero de 2015.</p>`,
+  },
+  {
+    slug: 'ponencia-setac-2012',
+    tipo: 'investigacion',
+    titulo: 'Life Cycle Assessment in Mexico: Overview and development of the Mexican LCA Network',
+    autores: 'Patricia Güereca (Instituto de Ingeniería, UNAM) y Nydia Suppen (CADIS)',
+    revista: 'SETAC Europe 18th LCA Case Study Symposium · Copenhague, 26–28 de noviembre de 2012',
+    fecha: '2012-11-26',
+    resumen:
+      'Ponencia presentada en Copenhague sobre el desarrollo del ACV en México y la conformación de la Red Mexicana de Análisis de Ciclo de Vida.',
+    imagen: '/assets/events/historico/setac-2012.png',
+    ajuste: 'cover',
+    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/acerca-de/actividades-de-la-red-mexicana-de-acv/',
+    html: `
+<p>Trabajo presentado en el <strong>SETAC Europe 18th LCA Case Study Symposium</strong>, «Sustainability assessment in the 21st century – tools, trends and applications», celebrado en Copenhague, Dinamarca, del 26 al 28 de noviembre de 2012.</p>
+<p>Formó parte de la sesión dedicada a las redes regionales y nacionales de ACV —qué existe y cómo funcionan—, donde se presentó el panorama del ACV en México y el desarrollo de la Red Mexicana de Análisis de Ciclo de Vida.</p>`,
+  },
   {
     slug: 'webinars-acv-2019',
     tipo: 'convocatoria',
