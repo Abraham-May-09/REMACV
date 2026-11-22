@@ -41,10 +41,10 @@ export default function Footer() {
             <h4>Contacto</h4>
             <a
               className="foot-link"
-              href="mailto:redmexicanadeciclodevida@gmail.com"
+              href="mailto:contacto@remacv.mx"
               style={{ wordBreak: 'break-word' }}
             >
-              redmexicanadeciclodevida<br/>@gmail.com
+              contacto@remacv.mx
             </a>
             <a
               className="foot-link"
