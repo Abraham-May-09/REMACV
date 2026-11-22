@@ -29,13 +29,6 @@ const PASADOS = ORDENADOS.filter((e) => (e.fin || e.inicio) < HOY);
 const DESTACADO = PASADOS[0];
 
 const ANIOS = PASADOS.map((e) => Number(e.inicio.slice(0, 4)));
-const PAISES = new Set(
-  EVENTOS.filter((e) => e.lugar !== 'En línea').map((e) => {
-    const l = e.lugar.split(/[·,]/).pop().trim();
-    return /Ciudad de México|Puebla|Veracruz|UNAM/.test(e.lugar) ? 'México' : l;
-  })
-);
-
 const FILTROS = [
   ['', 'Todos'],
   ['organiza', 'Organizados por la REMACV'],
@@ -135,20 +128,31 @@ export default function Eventos() {
         lede="Seminarios, congresos, conferencias y webinars donde la comunidad de ACV ha compartido avances, casos de estudio y formación desde 2011."
       />
 
-      {/* Cifras */}
-      <section className="evt-cifras-wrap">
+      {/* Guía de la página */}
+      <section className="evt-guia-wrap">
         <div className="container">
-          <dl className="evt-cifras reveal">
-            <div><dt>Eventos</dt><dd>{EVENTOS.length}</dd></div>
-            <div><dt>Trayectoria</dt><dd>{Math.min(...ANIOS)}–{Math.max(...ANIOS)}</dd></div>
-            <div><dt>Países</dt><dd>{PAISES.size}</dd></div>
-            <div><dt>Organizados por la red</dt><dd>{EVENTOS.filter((e) => e.organiza).length}</dd></div>
-          </dl>
+          <div className="evt-guia reveal">
+            <div className="evt-guia-txt">
+              <span className="section-eyebrow">Agenda de la red</span>
+              <h2>Encuentros que construyen la comunidad de ACV en México.</h2>
+            </div>
+            <nav className="evt-guia-nav" aria-label="En esta página">
+              <a href="#proximos">
+                <span>01</span>Próximos eventos
+              </a>
+              <a href="#trayectoria">
+                <span>02</span>Trayectoria {Math.min(...ANIOS)}–{Math.max(...ANIOS)}
+              </a>
+              <a href="mailto:contacto@remacv.mx?subject=Propuesta%20de%20evento" className="evt-guia-cta">
+                Proponer un evento <span aria-hidden="true">↗</span>
+              </a>
+            </nav>
+          </div>
         </div>
       </section>
 
       {/* Próximos + destacado */}
-      <section className="section-pad evt-intro">
+      <section className="section-pad evt-intro" id="proximos">
         <div className="container evt-intro-grid">
           <div className="evt-proximos reveal">
             <span className="section-eyebrow">Próximos eventos</span>
