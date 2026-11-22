@@ -11,7 +11,7 @@ if (!defined('REMACV')) { http_response_code(404); exit; }
 const EQUIPO = [                       // reciben todas las respuestas
     'contacto@remacv.mx',
     'jyes407@gmail.com',
-    // 'apadillar@iingen.unam.mx',   // pendiente de confirmar
+    'apadillar@iingen.unam.mx',
 ];
 const REMITENTE        = 'contacto@remacv.mx';
 const NOMBRE_REMITENTE = 'REMACV';
