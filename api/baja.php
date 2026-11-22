@@ -2,8 +2,8 @@
 /**
  * REMACV · Dejar de recibir correos
  *
- * GET  ?c=correo&t=firma  → página que pide confirmar la baja (así los antivirus
- *                            de correo que abren enlaces no dan de baja a nadie).
+ * GET  ?c=correo&t=firma  → baja inmediata (la aplica el navegador con un POST
+ *                            automático) y muestra "Listo", sin pedir confirmación.
  * POST accion=baja|alta    → aplica la baja o la reactivación.
  * POST List-Unsubscribe=One-Click → baja directa desde el botón de Gmail/Outlook.
  */
@@ -61,6 +61,11 @@ if ($metodo === 'POST') {
     }
     if ($accion === 'baja') {
         cambiarEstado($correo, 'baja');
+        if (($_POST['rapida'] ?? '') === '1') {   // petición automática desde la página
+            header('Content-Type: application/json; charset=utf-8');
+            echo '{"ok":true}';
+            exit;
+        }
         echo paginaHtml('Listo', '<div class="tarjeta">' . $cabecera . '<div class="cuerpo">'
             . '<p class="ante">Preferencias de correo</p><h1>Listo, ya no recibirás<br><span>nuestros correos.</span></h1>'
             . '<p>Dimos de baja <strong>' . esc($correo) . '</strong>. Gracias por haber sido parte de la comunidad de la REMACV; '
@@ -72,17 +77,22 @@ if ($metodo === 'POST') {
     }
 }
 
-// GET: pedir confirmación
+// GET: el clic en el botón del correo da de baja al instante.
+// La baja la aplica el navegador de la persona (una petición POST automática), así los
+// antivirus de correo que revisan enlaces sin abrir la página no dan de baja a nadie.
 $yaBaja = estaDeBaja($correo);
-echo paginaHtml('Dejar de recibir correos', '<div class="tarjeta">' . $cabecera . '<div class="cuerpo">'
-    . '<p class="ante">Preferencias de correo</p>'
-    . ($yaBaja
-        ? '<h1>Ya no estás recibiendo<br><span>nuestros correos.</span></h1>'
-          . '<p><strong>' . esc($correo) . '</strong> ya estaba dado de baja. No te enviaremos más correos.</p>'
-          . '<p class="nota" style="margin:20px 0 0">¿Quieres volver a recibirlos?</p>'
-          . formulario($correo, $firma, 'alta', 'Volver a suscribirme', 'sec')
-        : '<h1>¿Dejar de recibir<br><span>correos de la REMACV?</span></h1>'
-          . '<p>Si confirmas, <strong>' . esc($correo) . '</strong> ya no recibirá el boletín ni otros avisos de la red.</p>'
-          . formulario($correo, $firma, 'baja', 'Sí, dejar de recibir correos')
-          . '<p class="nota" style="margin:18px 0 0">Si llegaste aquí por error, solo cierra esta página.</p>')
+$listo = '<h1>Listo, ya no recibirás<br><span>nuestros correos.</span></h1>'
+       . '<p><strong>' . esc($correo) . '</strong> quedó dado de baja. Gracias por haber sido parte de la comunidad de la REMACV; '
+       . 'las puertas siguen abiertas cuando quieras volver.</p>'
+       . '<p class="nota" style="margin:20px 0 0">¿Fue un error?</p>'
+       . formulario($correo, $firma, 'alta', 'Volver a suscribirme', 'sec');
+$script = $yaBaja ? '' :
+    '<noscript><p class="nota">Para terminar, confirma aquí:</p>' . formulario($correo, $firma, 'baja', 'Confirmar baja') . '</noscript>'
+  . '<script>(function(){var d=new FormData();d.append("c",' . json_encode($correo) . ');d.append("t",' . json_encode($firma) . ');'
+  . 'd.append("accion","baja");d.append("rapida","1");'
+  . 'fetch("/api/baja.php",{method:"POST",body:d,credentials:"omit"}).then(function(r){if(!r.ok)throw 0;})'
+  . '.catch(function(){var e=document.getElementById("estado");if(e)e.innerHTML="No pudimos completar la baja. Escríbenos a <a href=\\"mailto:contacto@remacv.mx\\">contacto@remacv.mx</a> y lo hacemos por ti.";});})();</script>';
+echo paginaHtml('Listo', '<div class="tarjeta">' . $cabecera . '<div class="cuerpo">'
+    . '<p class="ante">Preferencias de correo</p>' . $listo
+    . '<p id="estado" class="nota" style="margin:16px 0 0"></p>' . $script
     . '</div></div>');
