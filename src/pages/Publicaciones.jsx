@@ -157,7 +157,6 @@ export default function Publicaciones() {
           )}
 
           <p className="pubs-nota reveal">
-            Incluye el archivo del sitio anterior de la REMACV (2012–2019).
             ¿Quieres compartir una publicación con la red? Escríbenos a{' '}
             <a href="mailto:contacto@remacv.mx">contacto@remacv.mx</a>.
           </p>

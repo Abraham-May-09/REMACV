@@ -1,6 +1,5 @@
 // ============================================================
-// Publicaciones — contenido migrado del sitio anterior de la REMACV
-// (redmexicanadeanalisdeciclodevida.wordpress.com), noviembre 2026.
+// Publicaciones de la REMACV.
 //
 // tipo: 'investigacion' | 'articulo' | 'convocatoria' | 'recurso'
 // destacado: true para mostrarla grande al inicio del listado
@@ -31,7 +30,6 @@ export const PUBLICACIONES = [
       'Revisión de cómo ha evolucionado el análisis de ciclo de vida en México desde 1999: quiénes lo han impulsado y en qué sectores se ha aplicado.',
     imagen: '/assets/events/historico/ijlca-2014.png',
     ajuste: 'cover',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/acerca-de/actividades-de-la-red-mexicana-de-acv/',
     externo: 'https://doi.org/10.1007/s11367-014-0844-9',
     html: `
 <p>Artículo de discusión publicado en <em>The International Journal of Life Cycle Assessment</em> por integrantes de la red, entre ellos sus socias fundadoras Leonor Patricia Güereca y Nydia Suppen Reynaga.</p>
@@ -50,7 +48,6 @@ export const PUBLICACIONES = [
       'Ponencia presentada en Copenhague sobre el desarrollo del ACV en México y la conformación de la Red Mexicana de Análisis de Ciclo de Vida.',
     imagen: '/assets/events/historico/setac-2012.png',
     ajuste: 'cover',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/acerca-de/actividades-de-la-red-mexicana-de-acv/',
     html: `
 <p>Trabajo presentado en el <strong>SETAC Europe 18th LCA Case Study Symposium</strong>, «Sustainability assessment in the 21st century – tools, trends and applications», celebrado en Copenhague, Dinamarca, del 26 al 28 de noviembre de 2012.</p>
 <p>Formó parte de la sesión dedicada a las redes regionales y nacionales de ACV —qué existe y cómo funcionan—, donde se presentó el panorama del ACV en México y el desarrollo de la Red Mexicana de Análisis de Ciclo de Vida.</p>`,
@@ -63,7 +60,6 @@ export const PUBLICACIONES = [
     resumen:
       'Ciclo de webinars de la Red Iberoamericana de Ciclo de Vida sobre impactos ambientales, ISO 14001 y declaraciones ambientales de producto.',
     imagen: '',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/2019/08/13/webinars-acv/',
     html: `
 <p>Durante el 2019, la Red Iberoamericana de Ciclo de Vida estará realizando una serie de webinars sobre el pensamiento de ciclo de vida. En esta página estaremos colocando la información. A continuación presentamos los más próximos:</p>
 <ul>
@@ -90,8 +86,6 @@ export const PUBLICACIONES = [
     resumen:
       'Los propósitos con los que nació la REMACV: agrupar a quienes desarrollan ACV en México, fortalecer sus buenas prácticas e incidir en políticas públicas.',
     imagen: '',
-    original:
-      'https://redmexicanadeanalisdeciclodevida.wordpress.com/2019/05/26/objetivos-de-la-red-mexicana-de-analisis-de-ciclo-de-vida/',
     html: `
 <ul>
   <li>Agrupar a los desarrolladores de Análisis de Ciclo de Vida en México.</li>
@@ -112,7 +106,6 @@ export const PUBLICACIONES = [
     resumen:
       '4º Congreso de Ingeniería, Ciencia y Gestión Ambiental y 5ª Conferencia de Greening of Industry Network, Ciudad de México, 28 al 30 de octubre de 2019.',
     imagen: '/assets/events/amica-2019.jpg',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/eventos/congreso-amica-gin-2019/',
     html: `
 <p>A través de este medio se le invita a participar en el <strong>4º Congreso de Ingeniería, Ciencia y Gestión Ambiental</strong> y la <strong>5ª Conferencia Internacional de Greening of Industry Network</strong>, que se llevará a cabo <strong>del 28 al 30 de octubre de 2019</strong> en la <strong>Ciudad de México</strong>. El Congreso es organizado por la Asociación Mexicana de Ingeniería, Ciencia y Gestión Ambiental (<a href="http://www.amica.com.mx/portal/">AMICA</a>) y Greening of Industry Network (<a href="http://www.greeningofindustry.org/">GIN</a>).</p>
 <p>Con el tema “<strong>Ambiente y Gobernanza: Innovación para la sostenibilidad</strong>”, el congreso tiene como objetivo que investigadores, funcionarios, industriales y estudiantes generen una discusión y compartan experiencias a través de trabajos técnico-científicos y conferencias magistrales realizadas por destacadas personalidades en el área.</p>
@@ -130,7 +123,6 @@ export const PUBLICACIONES = [
       'VIII Conferencia Internacional de Análisis de Ciclo de Vida en Latinoamérica, de regreso en Costa Rica en julio de 2019.',
     imagen: '/assets/events/cilca-2019.jpg',
     ajuste: 'contain',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/eventos/cilca-2019/',
     html: `
 <p><strong>VIII Conferencia Internacional de Análisis de Ciclo de Vida en Latinoamérica.</strong></p>
 <p>CILCA es un evento bianual que se lleva a cabo en diferentes países de América Latina y convoca a expertos e interesados de todo el mundo. La primera conferencia de CILCA se llevó a cabo en 2005, precisamente en San José de Costa Rica, y desde allí ha seguido un exitoso viaje que incluye Sao Paulo (Brasil) en 2007, Pucón (Chile) en 2009, Coatzacoalcos (México) en 2011, Mendoza (Argentina) en 2013, Lima (Perú) en 2015 y Medellín (Colombia) en 2017, programada a regresar nuevamente a Costa Rica para julio de 2019.</p>
@@ -145,7 +137,6 @@ export const PUBLICACIONES = [
     resumen:
       '3ª edición del Congreso Latinoamericano de Ecodiseño, del 29 al 31 de octubre de 2018 en Puebla, México.',
     imagen: '/assets/events/ecodal-2018.png',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/eventos/ecodal-puebla-2018/',
     html: `
 <p>La 3ª edición del Congreso Latinoamericano de Ecodiseño se llevará a cabo los días <strong>29, 30 y 31 de octubre</strong> de 2018 en la ciudad de Puebla de Zaragoza, capital del estado de <strong>Puebla, México</strong>.</p>
 <p>Más información: <a href="http://www.ecodal.org/">ecodal.org</a></p>`,
@@ -158,8 +149,6 @@ export const PUBLICACIONES = [
     resumen:
       'Tegucigalpa, Honduras, recibió a expertos internacionales en ACV el 24 y 25 de octubre de 2018.',
     imagen: '',
-    original:
-      'https://redmexicanadeanalisdeciclodevida.wordpress.com/eventos/6-seminario-internacional-de-analisis-de-ciclo-de-vida-octubre-24-y-25-de-2018-honduras/',
     html: `
 <p>Honduras será sede del sexto seminario internacional de análisis de ciclo de vida. La ciudad de Tegucigalpa recibirá el 24 y 25 de octubre de 2018 a expertos internacionales en el tema.</p>`,
   },
@@ -170,7 +159,6 @@ export const PUBLICACIONES = [
     fecha: '2018-11-14',
     resumen: 'Revista científica dedicada enteramente al análisis de ciclo de vida, publicada por Springer.',
     imagen: '',
-    original: 'https://redmexicanadeanalisdeciclodevida.wordpress.com/sitios-de-interes/publicaciones/',
     externo: 'https://link.springer.com/journal/11367',
     html: `
 <p><a href="https://link.springer.com/journal/11367">The International Journal of Life Cycle Assessment</a>: revista dedicada enteramente al análisis de ciclo de vida.</p>`,

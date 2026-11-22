@@ -311,15 +311,6 @@
 }
 .pub-copiar:hover { background: var(--mist); border-color: var(--green); }
 
-.pub-origen {
-  margin-top: 36px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  font-size: 13px;
-  color: #5b6c61;
-}
-.pub-origen a { color: var(--green); border-bottom: 1px solid var(--sage); }
-
 .pub-nav {
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
   margin-top: 28px;

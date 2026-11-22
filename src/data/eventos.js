@@ -1,6 +1,5 @@
 // ============================================================
-// Eventos de la REMACV — trayectoria 2011–2019, tomada del sitio
-// anterior (páginas «Eventos» y «Actividades de la Red»).
+// Eventos de la REMACV — trayectoria 2011–2019.
 //
 // inicio / fin: fechas ISO (fin opcional). Si solo se conoce el mes,
 //   usa el día 1 y pon `soloMes: true`.
@@ -9,15 +8,7 @@
 // imagen: cartel o imagen del evento (null = portada con la marca).
 // publicacion: slug en /publicaciones con el anuncio completo (opcional).
 //
-// Las imágenes en /assets/events/historico/ provienen de la página
-// «Actividades de la Red» del sitio anterior:
-// https://redmexicanadeanalisdeciclodevida.wordpress.com/acerca-de/actividades-de-la-red-mexicana-de-acv/
-//   cilca-2011.png     ← wp-content/uploads/2019/05/image.png
-//   setac-2012.png     ← wp-content/uploads/2019/05/image-1.png
-//   seminario-2013.png ← wp-content/uploads/2019/05/image-2.png
-//   ijlca-2014.png     ← wp-content/uploads/2019/05/image-3.png
-//   cicc-2016.png      ← wp-content/uploads/2019/05/image-4.png
-// (base: https://redmexicanadeanalisdeciclodevida.wordpress.com/)
+// Imágenes de eventos históricos: /assets/events/historico/
 // ============================================================
 
 export const TIPOS_EVENTO = {

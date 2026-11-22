@@ -109,11 +109,6 @@ export default function PublicacionDetalle() {
                 </div>
               )}
 
-              <p className="pub-origen">
-                Publicado originalmente en el{' '}
-                <a href={p.original} target="_blank" rel="noopener noreferrer">sitio anterior de la REMACV</a>.
-              </p>
-
               <nav className="pub-nav" aria-label="Más publicaciones">
                 {anterior ? (
                   <Link to={`/publicaciones/${anterior.slug}`} className="pub-nav-prev">
