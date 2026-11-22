@@ -24,6 +24,8 @@ ErrorDocument 503 /mantenimiento.html
   RewriteCond %{HTTP_COOKIE} !(^|;\s*)remacv_vista=CLAVE_EN_SERVIDOR
   RewriteCond %{REQUEST_URI} !^/mantenimiento\.html$
   RewriteCond %{REQUEST_URI} !^/assets/remacv-mark\.png$
+  RewriteCond %{REQUEST_URI} !^/assets/correo/
+  RewriteCond %{REQUEST_URI} !^/api/baja\.php$
   RewriteCond %{REQUEST_URI} !^/robots\.txt$
   RewriteRule ^ - [R=503,L]
 
