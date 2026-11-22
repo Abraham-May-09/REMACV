@@ -128,64 +128,11 @@ export default function Eventos() {
         lede="Seminarios, congresos, conferencias y webinars donde la comunidad de ACV ha compartido avances, casos de estudio y formación desde 2011."
       />
 
-      {/* Guía de la página */}
-      <section className="evt-guia-wrap">
-        <div className="container">
-          <div className="evt-guia reveal">
-            <div className="evt-guia-txt">
-              <span className="section-eyebrow">Agenda de la red</span>
-              <h2>Encuentros que construyen la comunidad de ACV en México.</h2>
-            </div>
-            <nav className="evt-guia-nav" aria-label="En esta página">
-              <a href="#proximos">
-                <span>01</span>Próximos eventos
-              </a>
-              <a href="#trayectoria">
-                <span>02</span>Trayectoria {Math.min(...ANIOS)}–{Math.max(...ANIOS)}
-              </a>
-              <a href="mailto:contacto@remacv.mx?subject=Propuesta%20de%20evento" className="evt-guia-cta">
-                Proponer un evento <span aria-hidden="true">↗</span>
-              </a>
-            </nav>
-          </div>
-        </div>
-      </section>
-
-      {/* Próximos + destacado */}
-      <section className="section-pad evt-intro" id="proximos">
-        <div className="container evt-intro-grid">
-          <div className="evt-proximos reveal">
-            <span className="section-eyebrow">Próximos eventos</span>
-            {PROXIMOS.length ? (
-              <ul className="evt-proximos-lista">
-                {PROXIMOS.map((e) => (
-                  <li key={e.id}>
-                    <span className="evt-fecha-chip">{rango(e.inicio, e.fin)}</span>
-                    <strong>{e.titulo}</strong>
-                    <Lugar ev={e} />
-                    <Acciones ev={e} />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="evt-vacio">
-                <h2>Muy pronto, nuevas fechas.</h2>
-                <p>
-                  Estamos preparando la siguiente agenda de seminarios y encuentros de la red.
-                  Suscríbete al boletín para enterarte primero.
-                </p>
-                <div className="evt-acciones">
-                  <Link to="/#newsletter" className="evt-btn">Suscribirme <span aria-hidden="true">→</span></Link>
-                  <a href="mailto:contacto@remacv.mx?subject=Propuesta%20de%20evento" className="evt-btn evt-btn-sec">
-                    Proponer un evento
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {DESTACADO && (
-            <article className="evt-destacado reveal d1">
+      {/* Evento más reciente (sobre el borde del encabezado, como en Publicaciones) */}
+      {DESTACADO && (
+        <section className="evt-destacado-wrap">
+          <div className="container">
+            <article className="evt-destacado reveal">
               <Portada ev={DESTACADO} grande />
               <div className="evt-destacado-body">
                 <span className="evt-kicker">Evento más reciente</span>
@@ -198,13 +145,44 @@ export default function Eventos() {
                 <Acciones ev={DESTACADO} />
               </div>
             </article>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* Trayectoria */}
       <section className="section-pad evt-trayectoria" id="trayectoria">
         <div className="container">
+          <div className="evt-proximos reveal" id="proximos">
+            <div className="evt-proximos-txt">
+              <span className="section-eyebrow">Próximos eventos</span>
+              {PROXIMOS.length ? (
+                <ul className="evt-proximos-lista">
+                  {PROXIMOS.map((e) => (
+                    <li key={e.id}>
+                      <span className="evt-fecha-chip">{rango(e.inicio, e.fin)}</span>
+                      <strong>{e.titulo}</strong>
+                      <Lugar ev={e} />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <>
+                  <h2>Muy pronto, nuevas fechas.</h2>
+                  <p>
+                    Estamos preparando la siguiente agenda de seminarios y encuentros de la red.
+                    Suscríbete al boletín para enterarte primero.
+                  </p>
+                </>
+              )}
+            </div>
+            <div className="evt-acciones">
+              <Link to="/#newsletter" className="evt-btn">Suscribirme <span aria-hidden="true">→</span></Link>
+              <a href="mailto:contacto@remacv.mx?subject=Propuesta%20de%20evento" className="evt-btn evt-btn-sec">
+                Proponer un evento
+              </a>
+            </div>
+          </div>
+
           <div className="evt-tray-head">
             <div>
               <div className="reveal"><span className="section-eyebrow">Trayectoria</span></div>

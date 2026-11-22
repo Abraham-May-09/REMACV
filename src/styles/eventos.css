@@ -1,116 +1,77 @@
 /* ============================================================
-   EVENTOS — guía, próximos, destacado y trayectoria por año
+   EVENTOS — destacado, próximos, destacado y trayectoria por año
    Lenguaje: tarjetas blancas con borde, acento verde, etiquetas
    con contorno (igual que Redes aliadas / Miembros).
    ============================================================ */
 
-/* ---------- Guía de la página (sobre el borde del encabezado) ---------- */
-.evt-guia-wrap {
+/* ---------- Destacado (sobre el borde del encabezado, igual que Publicaciones) ---------- */
+.evt-destacado-wrap {
   position: relative; z-index: 2;
-  margin-top: -56px;
-  background: linear-gradient(180deg, transparent 56px, var(--cream) 56px);
+  margin-top: -70px;
+  background: linear-gradient(180deg, transparent 70px, var(--cream) 70px);
 }
-.evt-guia {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 24px 40px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: 0 30px 60px -36px rgba(15,31,23,.45);
-  padding: 30px 36px;
-}
-.evt-guia-txt h2 {
-  margin-top: 10px;
-  font-size: clamp(20px, 2vw, 26px);
-  line-height: 1.2; letter-spacing: -.02em;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.evt-guia-nav {
-  display: flex; flex-wrap: nowrap; justify-content: flex-end; gap: 10px;
-}
-.evt-guia-nav a {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--sans);
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--pine);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 12px 18px;
-  transition: background .25s ease, border-color .25s ease, color .25s ease;
-}
-.evt-guia-nav a span { color: var(--leaf); font-size: 10.5px; letter-spacing: .08em; }
-.evt-guia-nav a:hover { border-color: var(--green); background: var(--mist); }
-.evt-guia-nav a.evt-guia-cta { background: var(--green); border-color: var(--green); color: #fff; }
-.evt-guia-nav a.evt-guia-cta span { color: #fff; }
-.evt-guia-nav a.evt-guia-cta:hover { background: var(--pine); border-color: var(--pine); }
-#proximos, #trayectoria { scroll-margin-top: 80px; }
 
-/* ---------- Intro: próximos + destacado ---------- */
-.evt-intro { background: var(--cream); padding-top: 72px; }
-.evt-intro-grid {
-  display: grid;
-  grid-template-columns: minmax(0, .9fr) minmax(0, 1.5fr);
-  gap: 32px;
-  align-items: stretch;
-}
+/* ---------- Próximos eventos (franja) ---------- */
 .evt-proximos {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 24px 40px;
   background:
-    radial-gradient(120% 90% at 0% 0%, rgba(63,161,94,.28), transparent 55%),
+    radial-gradient(120% 140% at 0% 0%, rgba(63,161,94,.28), transparent 55%),
     linear-gradient(160deg, #0f3a23 0%, var(--forest) 100%);
   color: #fff;
   border-radius: 14px;
-  padding: 36px 34px;
-  display: flex; flex-direction: column;
+  padding: 34px 38px;
+  margin-bottom: 72px;
   position: relative; overflow: hidden;
 }
 .evt-proximos::after {
   content: '';
-  position: absolute; right: -60px; bottom: -60px;
-  width: 220px; height: 220px;
+  position: absolute; right: -40px; top: -40px;
+  width: 200px; height: 200px;
   background: url('/assets/remacv-mark.png') center / contain no-repeat;
-  opacity: .08;
+  opacity: .07;
   pointer-events: none;
 }
+.evt-proximos-txt { max-width: 620px; position: relative; z-index: 1; }
 .evt-proximos .section-eyebrow { color: var(--sage); }
 .evt-proximos .section-eyebrow::before { background: var(--sage); }
-.evt-vacio { margin-top: auto; padding-top: 40px; }
-.evt-vacio h2 {
-  font-size: clamp(26px, 2.6vw, 34px);
-  letter-spacing: -.025em; line-height: 1.1;
-  margin-bottom: 14px;
+.evt-proximos h2 {
+  font-size: clamp(22px, 2.2vw, 28px);
+  letter-spacing: -.02em; line-height: 1.15;
+  margin: 12px 0 8px;
 }
-.evt-vacio p { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.78); }
+.evt-proximos p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.78); }
+.evt-proximos .evt-acciones { margin-top: 0; padding-top: 0; position: relative; z-index: 1; }
 .evt-proximos .evt-btn { background: #fff; color: var(--forest); }
 .evt-proximos .evt-btn:hover { background: var(--sage); color: var(--forest); }
 .evt-proximos .evt-btn-sec { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
 .evt-proximos .evt-btn-sec:hover { background: rgba(255,255,255,.1); color: #fff; border-color: #fff; }
-.evt-proximos-lista { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 18px; }
-.evt-proximos-lista li { padding-top: 18px; border-top: 1px solid rgba(255,255,255,.15); }
-.evt-proximos-lista strong { display: block; font-size: 18px; margin: 10px 0 6px; }
+.evt-proximos-lista { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 14px; }
+.evt-proximos-lista strong { display: block; font-size: 18px; margin: 8px 0 4px; }
 .evt-proximos .evt-lugar { color: rgba(255,255,255,.7); }
 .evt-fecha-chip {
   display: inline-block;
   font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
   background: rgba(255,255,255,.12); border-radius: 999px; padding: 6px 12px;
 }
+#proximos, #trayectoria { scroll-margin-top: 90px; }
 
 .evt-destacado {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 30px 60px -40px rgba(15,31,23,.4);
+  box-shadow: 0 34px 70px -40px rgba(15,31,23,.5);
 }
 .evt-destacado .evt-img { height: 100%; min-height: 340px; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
 .evt-destacado .evt-img:not(.evt-img-marca) { background: #fff; }
 .evt-destacado .evt-img:not(.evt-img-marca) img { object-fit: contain; padding: 14px; }
-.evt-destacado-body { padding: 34px 34px 30px; display: flex; flex-direction: column; gap: 12px; }
+/* La imagen no define el alto de la tarjeta: se ajusta al texto */
+.evt-destacado .evt-img { position: relative; }
+.evt-destacado .evt-img:not(.evt-img-marca) img { position: absolute; inset: 0; }
+.evt-destacado-body { padding: 40px 40px 34px; display: flex; flex-direction: column; gap: 12px; }
 .evt-kicker {
   font-size: 11px; font-weight: 700;
   letter-spacing: .22em; text-transform: uppercase;
@@ -193,7 +154,7 @@
 }
 
 /* ---------- Trayectoria ---------- */
-.evt-trayectoria { background: var(--paper); }
+.evt-trayectoria { background: var(--cream); }
 .evt-tray-head {
   display: flex; align-items: flex-end; justify-content: space-between;
   flex-wrap: wrap; gap: 24px 40px;
@@ -295,13 +256,8 @@
 
 /* ---------- Responsivo ---------- */
 @media (max-width: 1100px) {
-  .evt-intro-grid { grid-template-columns: 1fr; }
-  .evt-guia { grid-template-columns: 1fr; }
-  .evt-guia-nav { justify-content: flex-start; flex-wrap: wrap; }
 }
 @media (max-width: 860px) {
-  .evt-guia { grid-template-columns: 1fr; padding: 26px 24px; }
-  .evt-guia-nav { justify-content: flex-start; flex-wrap: wrap; }
   .evt-destacado { grid-template-columns: 1fr; }
   .evt-destacado .evt-img { min-height: 240px; border-right: 0; border-bottom: 1px solid var(--line); }
   .evt-timeline::before { left: 11px; }
@@ -312,7 +268,6 @@
   .evt-filtros { justify-content: flex-start; }
 }
 @media (max-width: 520px) {
-  .evt-guia-nav a { width: 100%; justify-content: center; }
   .evt-card-body { padding: 20px; }
   .evt-proximos, .evt-destacado-body { padding: 28px 22px; }
 }
