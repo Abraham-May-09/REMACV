@@ -178,17 +178,87 @@ function estaDeBaja(string $correo): bool {
 }
 
 // ---------------- Envío de correo ----------------
-/** Envía un correo HTML + texto (multipart/alternative). */
+/**
+ * Datos SMTP del buzón contacto@remacv.mx (archivo privado fuera de public_html):
+ *   remacv-datos/smtp.json → {"servidor":"smtp.hostinger.com","puerto":465,
+ *                             "usuario":"contacto@remacv.mx","clave":"…"}
+ * Con SMTP el correo sale firmado por remacv.mx (sin "a través de" y sin spam).
+ * Si el archivo no existe o la clave está vacía, se usa mail() del servidor.
+ */
+function configSmtp(): ?array {
+    $f = carpetaDatos() . '/smtp.json';
+    if (!is_file($f)) {
+        @file_put_contents($f, json_encode([
+            'servidor' => 'smtp.hostinger.com', 'puerto' => 465,
+            'usuario' => REMITENTE, 'clave' => '',
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
+        @chmod($f, 0600);
+        return null;
+    }
+    $c = json_decode((string)@file_get_contents($f), true);
+    if (!is_array($c) || trim((string)($c['clave'] ?? '')) === '' || str_contains((string)$c['clave'], 'PEGA')) return null;
+    return $c + ['servidor' => 'smtp.hostinger.com', 'puerto' => 465, 'usuario' => REMITENTE];
+}
+
+/** Cliente SMTP mínimo (SSL 465 o STARTTLS 587) con AUTH LOGIN. */
+function enviarSmtp(array $cfg, array $para, string $mensaje): bool {
+    $puerto = (int)$cfg['puerto'];
+    $ssl = ($cfg['seguridad'] ?? ($puerto === 465 ? 'ssl' : 'starttls')) === 'ssl';
+    $ctx = stream_context_create(['ssl' => ['verify_peer' => true, 'verify_peer_name' => true]]);
+    $dest = ($ssl ? 'ssl://' : 'tcp://') . $cfg['servidor'] . ':' . $puerto;
+    $s = @stream_socket_client($dest, $errno, $errstr, 15, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$s) throw new RuntimeException("conexión: $errstr");
+    stream_set_timeout($s, 20);
+    $leer = function () use ($s): string {
+        $r = '';
+        while (($l = fgets($s, 1024)) !== false) { $r .= $l; if (strlen($l) < 4 || $l[3] === ' ') break; }
+        return $r;
+    };
+    $cmd = function (?string $c, array $ok) use ($s, $leer): string {
+        if ($c !== null) fwrite($s, $c . "\r\n");
+        $r = $leer();
+        if (!in_array((int)substr($r, 0, 3), $ok, true)) {
+            throw new RuntimeException(trim(preg_replace('/^(AUTH LOGIN|[A-Za-z0-9+\/=]{8,})$/', '[oculto]', (string)$c)) . ' → ' . trim($r));
+        }
+        return $r;
+    };
+    try {
+        $cmd(null, [220]);
+        $host = 'remacv.mx';
+        $cmd("EHLO $host", [250]);
+        if (!$ssl) {
+            $cmd('STARTTLS', [220]);
+            if (!stream_socket_enable_crypto($s, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) throw new RuntimeException('STARTTLS');
+            $cmd("EHLO $host", [250]);
+        }
+        $cmd('AUTH LOGIN', [334]);
+        $cmd(base64_encode((string)$cfg['usuario']), [334]);
+        $cmd(base64_encode((string)$cfg['clave']), [235]);
+        $cmd('MAIL FROM:<' . REMITENTE . '>', [250]);
+        foreach ($para as $p) $cmd('RCPT TO:<' . $p . '>', [250, 251]);
+        $cmd('DATA', [354]);
+        // líneas que empiezan con punto se duplican (RFC 5321)
+        $cuerpo = preg_replace('/^\./m', '..', str_replace(["\r\n", "\n"], ["\n", "\r\n"], $mensaje));
+        $cmd($cuerpo . "\r\n.", [250]);
+        $cmd('QUIT', [221]);
+        return true;
+    } finally {
+        fclose($s);
+    }
+}
+
+/** Envía un correo HTML + texto (multipart/alternative): por SMTP si está configurado. */
 function enviar(array $para, string $asunto, string $html, string $texto, string $responderA,
                 array $extra = []): bool {
     $limite = 'remacv-' . bin2hex(random_bytes(12));
-    $encabezados = implode("\r\n", array_merge([
+    $asuntoCod = '=?UTF-8?B?' . base64_encode($asunto) . '?=';
+    $encabezados = array_merge([
         'MIME-Version: 1.0',
         "Content-Type: multipart/alternative; boundary=\"{$limite}\"",
         'From: =?UTF-8?B?' . base64_encode(NOMBRE_REMITENTE) . '?= <' . REMITENTE . '>',
         "Reply-To: {$responderA}",
         'X-Mailer: REMACV-sitio',
-    ], $extra));
+    ], $extra);
     $cuerpo = "--{$limite}\r\n"
             . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
             . chunk_split(base64_encode($texto)) . "\r\n"
@@ -196,8 +266,22 @@ function enviar(array $para, string $asunto, string $html, string $texto, string
             . "Content-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
             . chunk_split(base64_encode($html)) . "\r\n"
             . "--{$limite}--\r\n";
-    $asuntoCod = '=?UTF-8?B?' . base64_encode($asunto) . '?=';
-    return @mail(implode(', ', $para), $asuntoCod, $cuerpo, $encabezados, '-f' . REMITENTE);
+
+    if ($cfg = configSmtp()) {
+        $mensaje = implode("\r\n", array_merge([
+            'Date: ' . date(DATE_RFC2822),
+            'To: ' . implode(', ', $para),
+            "Subject: {$asuntoCod}",
+            'Message-ID: <' . bin2hex(random_bytes(16)) . '@remacv.mx>',
+        ], $encabezados)) . "\r\n\r\n" . $cuerpo;
+        try {
+            return enviarSmtp($cfg, $para, $mensaje);
+        } catch (Throwable $e) {
+            registrar('errores.log', ['t' => date('c'), 'smtp' => $e->getMessage()]);
+            // si el SMTP falla, se intenta con el servidor para no perder el aviso
+        }
+    }
+    return @mail(implode(', ', $para), $asuntoCod, $cuerpo, implode("\r\n", $encabezados), '-f' . REMITENTE);
 }
 /** Encabezados para que Gmail/Outlook muestren su propio botón de "Cancelar suscripción". */
 function encabezadosBaja(string $correo): array {
